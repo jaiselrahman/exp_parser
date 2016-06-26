@@ -124,11 +124,11 @@ float exp_parser::term()
 					//	break;
 						case '*':
 						match('*');
-						val*=term2();
+						val*=factor();
 						break;
 						case '/':
 						match('/');
-						val/=term2();
+						val/=factor();
 						break;
 				//		case ')':
 				//		match(')');
@@ -140,6 +140,7 @@ float exp_parser::term()
 		return val;
 }
 
+/*
 float exp_parser::term2()
 {
 		float val;
@@ -151,6 +152,7 @@ float exp_parser::term2()
 
 
 }
+*/
 
 float exp_parser::factor()
 {

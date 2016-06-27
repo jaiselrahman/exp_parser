@@ -1,12 +1,19 @@
 cmake_minimum_required ( VERSION 3.5.2)
+
 project(exp)
 
-set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_FLAGS_DEBUG -g2)
-set(CMAKE_CXX_FLAGS_RELEASE -o3)
+set(CMAKE_CXX_FLAGS_RELEASE "-o3 -DNDEBUG")
 set(EXECUTABLE_OUTPUT_PATH $ENV{CPRJ}/exp/bin)
-set(CMAKE_BUILD_TYPE DEBUG)
-include_directories (../include)
+
+IF(BUILD STREQUAL R)
+	set(CMAKE_BUILD_TYPE RELEASE)
+ELSE (IF(BUILD STREQUAL D))
+	set(CMAKE_BUILD_TYPE DEBUG)
+ENDIF()
+
+include_directories(../include)
+
 file ( GLOB SOURCES "../src/*.cpp" )
 
 #set(MVG_SOURCE "mvg.cpp")
@@ -20,3 +27,4 @@ add_executable (exp ${SOURCES})
 
 install(TARGETS exp 
 DESTINATION $ENV{HOME}/bin)
+

@@ -39,7 +39,9 @@ void exp_parser::unexpected()
 
 void exp_parser::match(char c) 
 {
-		cout<<"match ="<<c<<"\n";
+		#ifndef NDEBUG
+			cout<<"match ="<<c<<"\n";
+		#endif
 		if(look==c)
 		{
 				getchar();

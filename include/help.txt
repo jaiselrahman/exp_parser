@@ -1,10 +1,11 @@
-include<ExpConfig.h>
+#include<ExpConfig.h>
 
 #ifndef _HELP_TEXT_
 #define _HELP_TEXT_
 
 string help_text="\n\
-exp version " exp_VERSION "\n\
+Exp version " exp_VERSION "\n\
+Mathemetical expression parser\n \
 \n\
 	Supports basic mathematical operators like \n\
 	\n\

@@ -16,8 +16,6 @@ string(REGEX REPLACE "^v(.*)" "\\1" exp_VERSION ${exp_VERSION})
 
 execute_process( COMMAND bash -c "echo \"${exp_VERSION}\" > ../bin/version")
 
-set (exp_VERSION_MAJOR ${exp_VERSION_MAJOR}) 
-set (exp_VERSION_MINOR 5)
 project(exp
 VERSION ${exp_VERSION})
 

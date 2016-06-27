@@ -1,0 +1,15 @@
+string help_text="\
+Usage : exp [-h] <mathematical exptession>\n \
+	\n \
+	Supports basic mathematical operators like \n \
+	\n \
+	* multiplication\n \
+	/ division\n \
+	+ addition\n \
+	- subtraction\n \
+\n \
+	listed in order of prescedence\n \
+\n \
+	TODO : to add sqrt support\n \
+	TODO : to add variable support \n \
+";

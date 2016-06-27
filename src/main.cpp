@@ -15,22 +15,34 @@
 #include<iostream>
 #include<string>
 #include<exp_parser.h>
-using namespace std;
+#include<help.txt>
 
+using namespace std;
 
 int main(int argc,char *argv[])
 {
 		string exp;
 		exp_parser e;
+	//	string help_text=#include<"help.txt">;
 		if(argc>=2)
 		{
 			int i=1;
-			while(argv[i])
+			if(argv[i][0]=='-')
 			{
-				if(e.parse(argv[i++]))
-					cout<<" = "<<e.value<<endl;
-				else
-					cout<<" syntax error";
+				if(argv[i][1]=='h')
+				{
+						cout<<help_text<<endl;
+				}
+			}
+			else
+			{
+				while(argv[i])
+				{
+					if(e.parse(argv[i++]))
+						cout<<" = "<<e.value<<endl;
+					else
+						cout<<" syntax error";
+				}
 			}
 		}
 		else

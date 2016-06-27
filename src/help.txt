@@ -1,4 +1,4 @@
-
+string help_parser="
 Usage : exp [-h] <mathematical exptession>
 	
 	Supports basic mathematical operators like 
@@ -11,5 +11,5 @@ Usage : exp [-h] <mathematical exptession>
 	listed in order of prescedence
 
 	TODO : to add sqrt support
-	TODO : to add variable support
-
+	TODO : to add variable support 
+";

@@ -1,15 +1,32 @@
-string help_text="\
-Usage : exp [-h] <mathematical exptession>\n \
-	\n \
-	Supports basic mathematical operators like \n \
-	\n \
-	* multiplication\n \
-	/ division\n \
-	+ addition\n \
-	- subtraction\n \
-\n \
-	listed in order of prescedence\n \
-\n \
-	TODO : to add sqrt support\n \
-	TODO : to add variable support \n \
+include<ExpConfig.h>
+
+#ifndef _HELP_TEXT_
+#define _HELP_TEXT_
+
+string help_text="\n\
+exp version " exp_VERSION "\n\
+\n\
+	Supports basic mathematical operators like \n\
+	\n\
+	^ pow \n\
+	* multiplication \n\
+	/ division \n\
+	+ addition \n\
+	- subtraction \n\
+\n\
+	listed in order of prescedence \n\
+\n\
+	roots can be calculated using decimal power or fraction\n\
+	eg : \n\
+			2(1/5) \n\
+			=1.41421 \n\
+	(or)\n \
+			2^0.5 \n\
+			=1.41421 \n\
+\n\
+\n\
+\n\
+	TODO : to add variable support \n\
 ";
+
+#endif  //_HELP_TEXT_

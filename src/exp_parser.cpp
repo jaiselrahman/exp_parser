@@ -39,7 +39,7 @@ void exp_parser::unexpected()
 
 void exp_parser::match(char c) 
 {
-		#ifndef NDEBUG
+		#ifndef  NDEBUG
 			cout<<"match ="<<c<<"\n";
 		#endif
 		if(look==c)
@@ -142,20 +142,6 @@ float exp_parser::term()
 		return val;
 }
 
-/*
-float exp_parser::term2()
-{
-		float val;
-		if(look=='^')
-		{   
-				match('^');
-			    val=pow(val,expression());
-		}
-
-
-}
-*/
-
 float exp_parser::factor()
 {
 		float val;
@@ -176,10 +162,15 @@ float exp_parser::factor()
 		else
 		if(isdigit(look))
 				val=getnum();
+		
+		if(look=='^')
+		{
+				match('^');
+				val=pow(val,factor());
+		}
 		//cout<<"f2 look ="<<look<<"\n";
 		if( look && !isvalidop(look))
 				unexpected();
-
 		eatspace(); 
 
 		return val;
@@ -203,6 +194,8 @@ bool exp_parser::parse()
 		getchar();
 		eatspace();
 		value=expression();
+		if(pos<exp_length)
+				unexpected();
 		return !errorstatus;
 }
 

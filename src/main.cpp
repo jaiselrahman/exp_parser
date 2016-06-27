@@ -15,6 +15,7 @@
 #include<iostream>
 #include<string>
 #include<exp_parser.h>
+#include<ExpConfig.h>
 #include<help.txt>
 
 using namespace std;

@@ -7,19 +7,17 @@ set(EXECUTABLE_OUTPUT_PATH $ENV{CPRJ}/exp/bin)
 FIND_PACKAGE(Git)
 
 execute_process(
-COMMAND git describe --abbrev=4 HEAD
+COMMAND git describe --long
 COMMAND bash -c "awk  -F\"-\" '{print $1\".\"$2}'"
 OUTPUT_VARIABLE exp_VERSION
 OUTPUT_STRIP_TRAILING_WHITESPACE)
 
 string(REGEX REPLACE "^v(.*)" "\\1" exp_VERSION ${exp_VERSION})
 
-execute_process( COMMAND bash -c "echo \"${exp_VERSION}\" > ../bin/version")
-
 project(exp
 VERSION ${exp_VERSION})
 
-configure_file ("../include/ExpConfig.h.in"  "../include/ExpConfig.h"  )
+configure_file ("exp_version.h.in"  "../include/exp_version.h"  )
 
 IF(BUILD STREQUAL R)
 	set(CMAKE_BUILD_TYPE RELEASE)

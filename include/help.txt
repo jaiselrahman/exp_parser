@@ -1,4 +1,4 @@
-#include<ExpConfig.h>
+#include<exp_version.h>
 
 #ifndef _HELP_TEXT_
 #define _HELP_TEXT_

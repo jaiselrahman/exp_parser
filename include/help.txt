@@ -1,12 +1,15 @@
-#include<ExpConfig.h>
+#include<exp_version.h>
 
 #ifndef _HELP_TEXT_
 #define _HELP_TEXT_
 
 string help_text="\n\
-Exp version " exp_VERSION "\n\
+Exp version-" exp_VERSION " by jaisel rahman <jaisel20@gmail.com>\n\
 Mathemetical expression parser\n \
 \n\
+	enter q (or) quit to quit ,\n \
+	enter ? (or) help for this page\n \
+	\n\
 	Supports basic mathematical operators like \n\
 	\n\
 	^ pow \n\

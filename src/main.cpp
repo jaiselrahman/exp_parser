@@ -15,7 +15,7 @@
 #include<iostream>
 #include<string>
 #include<exp_parser.h>
-#include<ExpConfig.h>
+#include<exp_version.h>
 #include<help.txt>
 
 using namespace std;
@@ -24,7 +24,6 @@ int main(int argc,char *argv[])
 {
 		string exp;
 		exp_parser e;
-	//	string help_text=#include<"help.txt">;
 		if(argc>=2)
 		{
 			int i=1;
@@ -32,6 +31,7 @@ int main(int argc,char *argv[])
 			{
 				if(argv[i][1]=='h')
 				{
+						cout<<"Usage : exp [-h] [math-expression] \n";
 						cout<<help_text<<endl;
 				}
 			}
@@ -58,6 +58,9 @@ int main(int argc,char *argv[])
 	       	}while(exp=="");
 			while(exp!="q")
 			{
+				if(exp=="?")
+						cout<<help_text<<endl;
+				else
 				if(e.parse(exp))
 				{
 						cout<<" = "<<e.value<<endl;

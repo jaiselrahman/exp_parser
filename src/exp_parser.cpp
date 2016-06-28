@@ -79,7 +79,7 @@ bool exp_parser::isaddop(char c)
 		
 bool exp_parser::ismulop(char c)
 {
-		return (c=='*'||c=='/');
+		return (c=='*'||c=='/'||c=='(');
 }
 
 bool exp_parser::isdigit(char c)
@@ -120,10 +120,10 @@ float exp_parser::term()
 		{
 				switch(look)
 				{
-					//	case '(':
+						case '(':
 					//	match('(');
-					//	val*=factor();
-					//	break;
+						val*=factor();
+						break;
 						case '*':
 						match('*');
 						val*=factor();
@@ -150,11 +150,11 @@ float exp_parser::factor()
 				match('(');
 				val=expression();
 				match(')');
-			//	if(look==')')
-			//	{
-			//		match(')');
-			//		val=val*expression();
-			//	}
+				if(isdigit(look))
+				{
+					look='*';
+					--pos;
+				}
 		}
 		else
 		if(isaddop(look))

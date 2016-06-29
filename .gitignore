@@ -1,4 +1,5 @@
 CMakeFiles/
 bin/
+tests/
 !CMakeLists.txt
 *.in

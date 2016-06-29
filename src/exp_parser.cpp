@@ -12,7 +12,9 @@
 **/
 
 #include<exp_parser.h>
-
+#ifndef  NDEBUG
+#include<iostream>
+#endif
 void exp_parser::eatspace() 
 {
 		while(look==' '||look=='	')
@@ -37,7 +39,7 @@ void exp_parser::unexpected()
 		errorstatus=true;
 }
 
-void exp_parser::match(char c) 
+bool exp_parser::match(char c) 
 {
 		#ifndef  NDEBUG
 			cout<<"match ="<<c<<"\n";
@@ -46,23 +48,50 @@ void exp_parser::match(char c)
 		{
 				getchar();
 				eatspace();
+				return true;
 		}
 		else
+		{
 			unexpected();
+			return false;
+		}
 }
 	
-int exp_parser::getnum()
+double exp_parser::getnum()
 {
-		int val=0;
-		if(!isdigit(look))
+		double val=0;
+		if(!(isdigit(look)||look=='.'))
 				unexpected();
 		else
 		{
-				while(isdigit(look))
+				bool dec_found=false;
+				bool exp_found=false;
+				stringstream s;
+				while(isdigit(look)||(look=='.'&&dec_found==false))//||((look=='E'||look=='e')&&exp_found==true))
 				{
-						val=val*10+int(look)-int('0');
+						s<<look;
+						if(look=='.')
+							dec_found=true;
 						getchar();
+
+						if(look=='e'||look=='E')
+						{
+								exp_found=true;
+							   	s<<look;
+								getchar();
+								if(isaddop(look)||isdigit(look))
+								{
+										s<<look;
+										getchar();
+								}
+								else
+								{
+										pos-=2;
+										break;
+								}
+			            }
 				}
+				s>>val;
 		}
 		return val;
 }
@@ -87,9 +116,9 @@ bool exp_parser::isdigit(char c)
 		return (c>='0'&&c<='9');
 }
 		
-float exp_parser::expression()
+double exp_parser::expression()
 {
-		float val;
+		double val;
 		if(isaddop(look))
 				val=0;
 		else
@@ -112,16 +141,15 @@ float exp_parser::expression()
 		return val;
 }
 
-float exp_parser::term()
+double exp_parser::term()
 {
-		float val;
+		double val;
 		val=factor();
 		while(ismulop(look))
 		{
 				switch(look)
 				{
 						case '(':
-					//	match('(');
 						val*=factor();
 						break;
 						case '*':
@@ -132,19 +160,15 @@ float exp_parser::term()
 						match('/');
 						val/=factor();
 						break;
-				//		case ')':
-				//		match(')');
-				//		val*=factor();
-				//		break;
 				}
 		}
 		//cout<<"look term ="<<look<<"\n";
 		return val;
 }
 
-float exp_parser::factor()
+double exp_parser::factor()
 {
-		float val;
+		double val;
 		if(look=='(') 
 		{
 				match('(');
@@ -160,7 +184,7 @@ float exp_parser::factor()
 		if(isaddop(look))
 				val=expression();
 		else
-		if(isdigit(look))
+		if(isdigit(look)||look=='.')
 				val=getnum();
 		
 		if(look=='^')

@@ -27,24 +27,37 @@ int main(int argc,char *argv[])
 		if(argc>=2)
 		{
 			int i=1;
-			if(argv[i][0]=='-')
-			{
-				if(argv[i][1]=='h')
-				{
-						cout<<"Usage : exp [-h] [math-expression] \n";
-						cout<<help_text<<endl;
-				}
-			}
-			else
-			{
 				while(argv[i])
 				{
-					if(e.parse(argv[i++]))
+					if(argv[i][0]=='-')
+					{
+							int j=1;
+							while(argv[i][j])
+							{
+									switch(argv[i][j])
+									{
+										case 'h':
+										cout<<"Usage : exp [-h] [-v] [math-expression] \n";
+										cout<<help_text;
+										return 0;
+										case 'v':
+										cout<<"exp version " exp_VERSION " by jaisel rahman <jaisel20@gmail.com>\n";
+										return 0;
+									}
+									j++;
+
+							}
+					}
+					//else
+					if(e.parse(argv[i]))
 						cout<<" = "<<e.value<<endl;
 					else
+					{
 						cout<<" syntax error";
+						return 1;
+					}
+					i++;
 				}
-			}
 		}
 		else
 		{

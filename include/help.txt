@@ -4,7 +4,7 @@
 #define _HELP_TEXT_
 
 string help_text="\n\
-Exp version-" exp_VERSION " by jaisel rahman <jaisel20@gmail.com>\n\
+exp version-" exp_VERSION " by jaisel rahman <jaisel20@gmail.com>\n\
 Mathemetical expression parser\n \
 \n\
 	enter q (or) quit to quit ,\n \

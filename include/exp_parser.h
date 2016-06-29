@@ -16,7 +16,7 @@
 #define _EXP_PARSER_H_
 
 #include<string>
-#include<iostream>
+#include<sstream>
 #include<cmath>
 using namespace std;
 
@@ -42,9 +42,9 @@ class exp_parser
 
 		void unexpected(); //to set the error status
 
-		void match(char c); 
+		bool match(char c); 
 	
-		int getnum();
+		double getnum();
 		
 		bool isvalidop(char c);
 		
@@ -54,17 +54,17 @@ class exp_parser
 
 		bool isdigit(char c);
 		
-		float expression();
+		double expression();
 
-		float term();
+		double term();
 		
-		float factor();
+		double factor();
 
 		public:
 
 		int errorpos;
 		
-		float value;
+		double value;
 		
 		exp_parser(); 
 

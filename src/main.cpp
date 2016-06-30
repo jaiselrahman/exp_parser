@@ -30,36 +30,35 @@ int main(int argc,char *argv[])
 {
 		string exp;
 		exp_parser e;
-		if(argc>=2)
+		if(argc>1)
 		{
 			int i=1;
 				while(argv[i])
 				{
+					if(string("--help").compare(argv[i])==0)
+							cout<<help_text;
 					if(argv[i][0]=='-')
 					{
-							int j=1;
-							while(argv[i][j])
+							switch(argv[i][1])
 							{
-									switch(argv[i][j])
-									{
-										case 'h':
-										cout<<"Usage : exp [-h] [-v] [math-expression] \n";
-										cout<<help_text;
-										return 0;
-										case 'v':
-										cout<<"exp version " exp_VERSION " by jaisel rahman <jaisel20@gmail.com>\n";
-										return 0;
-									}
-									j++;
-
+									case 'h':
+									cout<<"Usage : exp [-h] [-v] [math-expression] \n";
+									return 0;
+									case 'v':
+									cout<<"exp version " exp_VERSION " by jaisel rahman <jaisel20@gmail.com>\n";
+									return 0;
+									default:
+									cerr<<"Invalid option";
+									return 2;
+									break;
 							}
+
 					}
-					//else
 					if(e.parse(argv[i]))
 						cout<<" = "<<e.value<<endl;
 					else
 					{
-						cout<<" syntax error";
+						cerr<<" syntax error";
 						return 1;
 					}
 					i++;
@@ -90,7 +89,7 @@ int main(int argc,char *argv[])
 						cout.width(e.errorpos);
 						cout.fill('~');
 						cout<<'^'<<endl;
-						cout<<"  syntax error\n";
+						cerr<<"  syntax error\n";
 					}
 				}
 			}while(!cin.eof());	

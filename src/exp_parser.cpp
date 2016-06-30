@@ -186,7 +186,7 @@ double exp_parser::factor()
 		else
 		if(isdigit(look)||look=='.')
 				val=getnum();
-		
+		eatspace();
 		if(look=='^')
 		{
 				match('^');
@@ -194,8 +194,7 @@ double exp_parser::factor()
 		}
 		//cout<<"f2 look ="<<look<<"\n";
 		if( look && !isvalidop(look))
-				unexpected();
-		eatspace(); 
+				unexpected(); 
 
 		return val;
 }

@@ -19,7 +19,13 @@
 #include<help.txt>
 
 using namespace std;
+string trim(const string &t)
+{
+		int i;
+		for(i=0;t[i]==' '||t[i]=='\t';i++);
 
+		return t.substr(i);
+}
 int main(int argc,char *argv[])
 {
 		string exp;
@@ -61,40 +67,34 @@ int main(int argc,char *argv[])
 		}
 		else
 		{
-			char c[1024];
 			cout<<"Enter an expression to evaluate, q to quit, ? for help \n";
 			do
 			{
-				cout<<"-> ";
-		    	cin.getline(c,1024,'\n');
-	            exp=c;
-	       	}while(exp=="");
-			while(exp!="q")
-			{
+	            cout<<"-> ";
+	            getline(cin,exp);
+				if(exp=="q")
+						return 0;
+				else
 				if(exp=="?")
 						cout<<help_text<<endl;
 				else
-				if(e.parse(exp))
+				if(trim(exp)!="")
 				{
+					if(e.parse(exp))
+					{
 						cout<<" = "<<e.value<<endl;
+					}
+					else
+					{
+						cout<<"   ";
+						cout.width(e.errorpos);
+						cout.fill('~');
+						cout<<'^'<<endl;
+						cout<<"  syntax error\n";
+					}
 				}
-				else
-				{
-					cout<<"   ";
-					cout.width(e.errorpos);
-					cout.fill('~');
-					cout<<'^'<<endl;
-					cout<<"  syntax error\n";
-				}
-				do
-				{
-				cout<<"-> ";
-				cin.getline(c,1024,'\n');
-				exp=c;
-				}while(exp=="");
-			}
+			}while(!cin.eof());	
 		}
-
 		return 0;
 }
 

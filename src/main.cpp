@@ -94,6 +94,7 @@ int main(int argc,char *argv[])
 				}
 			}while(!cin.eof());	
 		}
+		cout<<"\n";
 		return 0;
 }
 

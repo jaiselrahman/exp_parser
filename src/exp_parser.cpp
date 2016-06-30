@@ -26,9 +26,8 @@ void exp_parser::eatspace()
 void exp_parser::getchar()
 {
 		if(pos<=exp_length)
-		{
+		
 				look=exp[pos++];
-		}
 		else
 				look=0;
 }
@@ -185,15 +184,17 @@ double exp_parser::factor()
 				val=expression();
 		else
 		if(isdigit(look)||look=='.')
+		{
 				val=getnum();
-		eatspace();
+				eatspace();
+		}
 		if(look=='^')
 		{
 				match('^');
 				val=pow(val,factor());
 		}
-		//cout<<"f2 look ="<<look<<"\n";
-		if( look && !isvalidop(look))
+		cout<<"f2 val ="<<val<<"\n";
+		if( !look || !isvalidop(look))
 				unexpected(); 
 
 		return val;

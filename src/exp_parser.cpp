@@ -173,10 +173,16 @@ double exp_parser::factor()
 				match('(');
 				val=expression();
 				match(')');
-				if(isdigit(look))
+				if(isdigit(look)||look=='.')
 				{
 					look='*';
 					--pos;
+				}
+				else
+				if(look=='^')
+    	        {
+                     match('^');
+                     val=pow(val,factor());
 				}
 		}
 		else
@@ -187,14 +193,16 @@ double exp_parser::factor()
 		{
 				val=getnum();
 				eatspace();
+		
+			if(look=='^')
+			{
+					match('^');
+					val=pow(val,factor());
+			}
 		}
-		if(look=='^')
-		{
-				match('^');
-				val=pow(val,factor());
-		}
-		cout<<"f2 val ="<<val<<"\n";
-		if( !look || !isvalidop(look))
+	//	cout<<"f2 val ="<<val<<"\n";
+	//	if( !look)
+		else
 				unexpected(); 
 
 		return val;

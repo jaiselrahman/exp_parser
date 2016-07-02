@@ -25,7 +25,7 @@ using namespace std;
 class exp_parser
 {
 		private:
-		
+
 		string exp;        //contains expression to be parsed
 		
 		int exp_length;	   //contains length of expression string
@@ -34,7 +34,7 @@ class exp_parser
 		
 		int pos;		   //contains present location if look
 		
-		bool errorstatus;  //whether expression parsing succeeds
+		bool iserror;  //whether expression parsing succeeds
 		
 		void eatspace();   //to ignore white space in expression string
 		
@@ -44,7 +44,7 @@ class exp_parser
 
 		bool match(char c); 
 	
-		double getnum();
+		long double getnum();
 		
 		bool isvalidop(char c);
 		
@@ -54,17 +54,19 @@ class exp_parser
 
 		bool isdigit(char c);
 		
-		double expression();
+		long double expression();
 
-		double term();
+		long double term();
 		
-		double factor();
+		long double factor();
 
 		public:
 
 		int errorpos;
 		
-		double value;
+		long double value;
+
+		long double prev_value;
 		
 		exp_parser(); 
 

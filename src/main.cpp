@@ -23,7 +23,6 @@ string trim(const string &t)
 {
 		int i;
 		for(i=0;t[i]==' '||t[i]=='\t';i++);
-
 		return t.substr(i);
 }
 int main(int argc,char *argv[])
@@ -36,26 +35,33 @@ int main(int argc,char *argv[])
 				while(argv[i])
 				{
 					if(string("--help").compare(argv[i])==0)
+					{
 							cout<<help_text;
+							return 0;
+					}
 					if(argv[i][0]=='-')
 					{
 							switch(argv[i][1])
 							{
 									case 'h':
 									cout<<"Usage : exp [-h] [-v] [math-expression] \n";
+									cout<<"Try 'exp --help' for more details\n";
 									return 0;
+									
 									case 'v':
-									cout<<"exp version " exp_VERSION " by jaisel rahman <jaisel20@gmail.com>\n";
+									cerr<<"exp version " exp_VERSION " by jaisel rahman <jaisel20@gmail.com>\n";
 									return 0;
+									
 									default:
-									cerr<<"Invalid option";
+									cerr<<"Invalid option\n";
+									cerr<<"Try 'exp --help for more details\n";
 									return 2;
 									break;
 							}
 
 					}
 					if(e.parse(argv[i]))
-						cout<<" = "<<e.value<<endl;
+						cout<<" = "<<(long double)e.value<<"\n";
 					else
 					{
 						cerr<<" syntax error";
@@ -70,14 +76,17 @@ int main(int argc,char *argv[])
 			do
 			{
 	            cout<<"-> ";
-	            getline(cin,exp);
+				getline(cin,exp,'\n');
+				
 				if(exp=="q")
+				{
 						return 0;
-				else
-				if(exp=="?")
+				}
+				else if(exp=="?")
+				{
 						cout<<help_text<<endl;
-				else
-				if(trim(exp)!="")
+				}
+				else if(trim(exp)!=""&&!cin.eof())
 				{
 					if(e.parse(exp))
 					{
@@ -89,12 +98,12 @@ int main(int argc,char *argv[])
 						cout.width(e.errorpos);
 						cout.fill('~');
 						cout<<'^'<<endl;
-						cerr<<"  syntax error\n";
+						cout<<"  syntax error\n";
 					}
 				}
 			}while(!cin.eof());	
+		cout<<'\n';
 		}
-		cout<<"\n";
 		return 0;
 }
 

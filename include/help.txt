@@ -4,7 +4,7 @@
 #define _HELP_TEXT_
 
 string help_text="\n\
-exp version-" exp_VERSION " by jaisel rahman <jaisel20@gmail.com>\n\
+exp version " exp_VERSION " by jaisel rahman <jaisel20@gmail.com>\n\
 Mathemetical expression parser\n \
 \n\
 	enter q (or) quit to quit ,\n \
@@ -18,19 +18,22 @@ Mathemetical expression parser\n \
 	+ addition \n\
 	- subtraction \n\
 \n\
-	listed in order of prescedence \n\
+	listed in order of precedence \n\
+	( ) can be used used to group expression and has the highest order of precedence\n\
+\n\
+	supports implicit multiplication operator \n\
+	i.e: '*' can be omitted in expressions like a*(b) or (a)*b\n\
+\n\
+	value of previous expression can be obtained using variable 'a'\n\
 \n\
 	roots can be calculated using decimal power or fraction\n\
 	eg : \n\
-			2(1/5) \n\
+			2^(1/5) \n\
 			=1.41421 \n\
 	(or)\n \
 			2^0.5 \n\
 			=1.41421 \n\
 \n\
-\n\
-\n\
-	TODO : to add variable support \n\
 ";
 
 #endif  //_HELP_TEXT_

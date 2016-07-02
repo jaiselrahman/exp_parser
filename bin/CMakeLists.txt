@@ -14,12 +14,12 @@ OUTPUT_STRIP_TRAILING_WHITESPACE)
 
 string(REGEX REPLACE "^v(.*)" "\\1" exp_VERSION ${exp_VERSION})
 
-execute_process( COMMAND bash -c "echo \"${exp_VERSION}\" > ../bin/version")
+execute_process( COMMAND bash -c "echo \"${exp_VERSION}\"")
 
 project(exp
 VERSION ${exp_VERSION})
 
-configure_file ("../include/exp_version.h.in"  "../include/exp_version.h"  )
+configure_file ("exp_version.h.in"  "../include/exp_version.h"  )
 
 IF(BUILD STREQUAL R)
 	set(CMAKE_BUILD_TYPE RELEASE)
@@ -29,7 +29,7 @@ ENDIF()
 
 include_directories(../include)
 
-file ( GLOB SOURCES "../src/*.cpp" )
+file ( GLOB SOURCES "../src/*.c*" )
 
 #set(MVG_SOURCE "mvg.cpp")
 # Build Library

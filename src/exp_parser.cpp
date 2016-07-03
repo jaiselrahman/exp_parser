@@ -265,14 +265,12 @@ long double exp_parser::factor()
 				}
 		}
 		else
-		if(!isvalidop(look))   
-		{
 				seterror(error::unexpected);
-		}
+		
 		if(match('^'))
 		{
-		return pow(val,factor());                  
-		}	
+					return pow(val,factor());       
+		}
 		
 		return val;
 }

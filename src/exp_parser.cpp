@@ -32,10 +32,11 @@ void exp_parser::getchar()
 				look=0;
 }
 
-void exp_parser::unexpected()
+void exp_parser::seterror(error e) 
 {
+		errorstatus=e;
 		errorpos=pos;
-		iserror=true;
+		look=0;
 }
 
 bool exp_parser::match(char c) 
@@ -51,18 +52,37 @@ bool exp_parser::match(char c)
 		}
 		else
 		{
-	//		unexpected();
-			return false;
+				return false;
 		}
 }
+
+std::string  exp_parser::getvar()
+{
+		string var;
+		if(!isalpha(look))
+		{
+				seterror(error::unexpected);
+		}
+		else
+		{
+			while(isalpha(look)||isdigit(look))
+			{
+					var+=look;
+					getchar();
+			}
+			eatspace();
+		}
+		return var;
+}
 	
-long  double exp_parser::getnum()
+long double exp_parser::getnum()
 {
 		long double val=0;
 		if(!(isdigit(look)||look=='.'))
-				unexpected();
+				seterror(error::unexpected);
 		else
 		{
+		//	/*	
 				bool dec_found=false;
 				bool exp_found=false;
 				stringstream s;
@@ -71,6 +91,7 @@ long  double exp_parser::getnum()
 						s<<look;
 						if(look=='.')
 							dec_found=true;
+						
 						getchar();
 
 						if(look=='e'||look=='E')
@@ -85,20 +106,25 @@ long  double exp_parser::getnum()
 								}
 								else
 								{
-										pos-=2;
+										pos-=1;
 										break;
 								}
-			            }
-				}	
-				s>>val;
 
-			/*  stringstream s1,s2;	
+			            }
+				}
+				s>>val;
+		//	*/
+
+		/*
+				stringstream s1,s2;	
 				s1<<exp.substr(pos-1);
 				s1>>val;
 				s2<<val;
 				pos+=s2.str().length()-1;
 				getchar();
-				*/
+		*/
+			
+
 		}
 		return val;
 }
@@ -122,14 +148,45 @@ bool exp_parser::isdigit(char c)
 {
 		return (c>='0'&&c<='9');
 }
+
+bool exp_parser::isalpha(char c)
+{
+		return ( look>='a' && look<='z' || look>='A' && look<='Z' );
+}
+
+long double exp_parser::assignment()
+{
+		string var;
+		long double val;
+	/*	if(isalpha(look))
+		{
+			var=getvar();
+			if(match('='))
+			{
+				val=expression();
+				var_table[var]=val;
+				return val;
+			}
+			else
+			{
+				pos-=var.length()+1;
+				getchar();
+				return expression();
+			}
+		}
+		else*/
+				return expression();
+}
 		
 long double exp_parser::expression()
 {
 		long double val;
+
 		if(isaddop(look))
 				val=0;
 		else
-		val=term();	
+				val=term();	
+
 		while(isaddop(look))
 		{
 				switch(look)
@@ -173,7 +230,7 @@ long double exp_parser::term()
 
 long double exp_parser::factor()
 {
-		long double val;
+		long double val=0;
 		if(match('(')) 
 		{
 				val=expression();
@@ -194,22 +251,35 @@ long double exp_parser::factor()
 				eatspace();
 		}
 		else
-		if(match('a'))
+		if(isalpha(look))
 		{
-				val=prev_value;
+				if(match('a'))
+				{
+					val=prev_value;
+				}
+				else
+				{
+					//seterror(error::undefined_var);
+					val=0;
+					getchar();
+				}
 		}
 		else
-				unexpected();
+		if(!isvalidop(look))   
+		{
+				seterror(error::unexpected);
+		}
 		if(match('^'))
-	    {
-	            val=pow(val,factor());
-	    } 
-
+		{
+		return pow(val,factor());                  
+		}	
+		
 		return val;
 }
 
-exp_parser::exp_parser() 
+exp_parser::exp_parser()
 {
+		var_table["pi"]=3.14;
 		prev_value=0;
 }
 
@@ -223,21 +293,23 @@ exp_parser::exp_parser(string exp)
 bool exp_parser::parse()
 {
 		pos=0;
-		iserror=false;
+		errorstatus=error::noerror;
 		errorpos=0;
 		getchar();
 		eatspace();
-		value=expression();
-
-		if(pos<exp_length)
+		value=assignment();
+		if(pos<=exp_length)
 		{
-				unexpected();
-				pos++;
+				seterror(error::unexpected);
+				errorpos=pos;
 		}
-		if(!iserror)
+		if(errorstatus==error::noerror)
+		{
 				prev_value=value;
-
-		return !iserror;
+				return true;
+		}
+		else
+				return false;
 }
 
 bool exp_parser::parse(string exp)

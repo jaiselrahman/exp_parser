@@ -90,15 +90,27 @@ int main(int argc,char *argv[])
 				{
 					if(e.parse(exp))
 					{
-						cout<<" = "<<e.value<<endl;
-					}
+							cout<<" = "<<e.value<<endl;
+					}		
 					else
 					{
-						cout<<"   ";
-						cout.width(e.errorpos);
-						cout.fill('~');
-						cout<<'^'<<endl;
-						cout<<"  syntax error\n";
+							switch(e.errorstatus)
+							{
+								case exp_parser::error::unexpected:
+								cout<<"   ";
+								cout.width(e.errorpos);
+								cout.fill('~');
+								cout<<'^'<<endl;
+								cout<<"  syntax error\n";
+								break;
+								case exp_parser::error::undefined_var:
+								cout<<"   ";
+								cout.width(e.errorpos);
+								cout.fill('~');
+								cout<<'^'<<endl;
+								cout<<"  undefined variable\n";
+								break;
+							}
 					}
 				}
 			}while(!cin.eof());	

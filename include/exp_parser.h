@@ -18,14 +18,37 @@
 #include<string>
 #include<sstream>
 #include<cmath>
+#include<map>
 using namespace std;
 
 //expression parser class
 
 class exp_parser
 {
-		private:
+        public:
 
+        enum class error : char { noerror, undefined_var,unexpected};
+
+        error errorstatus;
+
+        int errorpos;              
+		
+		long double value;
+
+        long double prev_value;
+
+        map<string,long double> var_table;
+
+        exp_parser();
+
+        exp_parser(string exp);
+
+        bool parse();
+
+        bool parse(string exp);
+
+		private:
+		
 		string exp;        //contains expression to be parsed
 		
 		int exp_length;	   //contains length of expression string
@@ -34,16 +57,16 @@ class exp_parser
 		
 		int pos;		   //contains present location if look
 		
-		bool iserror;  //whether expression parsing succeeds
-		
 		void eatspace();   //to ignore white space in expression string
 		
 		void getchar();    //to get the value of look
 
-		void unexpected(); //to set the error status
+		void seterror(error e); //to set the error status
 
 		bool match(char c); 
-	
+		
+		string getvar();
+			
 		long double getnum();
 		
 		bool isvalidop(char c);
@@ -53,6 +76,10 @@ class exp_parser
 		bool ismulop(char c);
 
 		bool isdigit(char c);
+
+		bool isalpha(char c);
+
+		long double assignment();
 		
 		long double expression();
 
@@ -60,21 +87,6 @@ class exp_parser
 		
 		long double factor();
 
-		public:
-
-		int errorpos;
-		
-		long double value;
-
-		long double prev_value;
-		
-		exp_parser(); 
-
-		exp_parser(string exp);
-		
-		bool parse();
-
-		bool parse(string exp);
 };
 
 #endif

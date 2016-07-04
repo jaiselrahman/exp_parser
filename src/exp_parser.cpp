@@ -27,9 +27,14 @@ void exp_parser::eatspace()
 void exp_parser::getchar()
 {
 		if(pos<=exp_length)
+		{
 				look=exp[pos++];
+		}
 		else
+		{
 				look=0;
+				--pos;
+		}
 }
 
 void exp_parser::seterror(error e) 
@@ -82,7 +87,6 @@ long double exp_parser::getnum()
 				seterror(error::unexpected);
 		else
 		{
-		//	/*	
 				bool dec_found=false;
 				bool exp_found=false;
 				stringstream s;
@@ -113,8 +117,6 @@ long double exp_parser::getnum()
 			            }
 				}
 				s>>val;
-		//	*/
-
 		/*
 				stringstream s1,s2;	
 				s1<<exp.substr(pos-1);
@@ -123,7 +125,6 @@ long double exp_parser::getnum()
 				pos+=s2.str().length()-1;
 				getchar();
 		*/
-			
 
 		}
 		return val;
@@ -158,14 +159,14 @@ long double exp_parser::assignment()
 {
 		string var;
 		long double val;
-	/*	if(isalpha(look))
+		if(isalpha(look))
 		{
 			var=getvar();
 			if(match('='))
 			{
-				val=expression();
-				var_table[var]=val;
-				return val;
+					val=expression();
+					var_table[var]=val;
+					return val;
 			}
 			else
 			{
@@ -174,7 +175,7 @@ long double exp_parser::assignment()
 				return expression();
 			}
 		}
-		else*/
+		else
 				return expression();
 }
 		
@@ -259,9 +260,19 @@ long double exp_parser::factor()
 				}
 				else
 				{
-					//seterror(error::undefined_var);
-					val=0;
-					getchar();
+					string var=getvar();
+
+					auto q = var_table.find(var); 
+					if (q==var_table.end()) 
+					{ 
+							seterror(error::undefined_var);
+							--pos; 
+					} 
+					else 
+					{
+							val=q->second;
+					}
+					
 				}
 		}
 		else
@@ -277,13 +288,12 @@ long double exp_parser::factor()
 
 exp_parser::exp_parser()
 {
-		var_table["pi"]=3.14;
 		prev_value=0;
 }
 
-exp_parser::exp_parser(string exp)
+exp_parser::exp_parser(const string &exp)
 {
-		prev_value=0;
+		exp_parser();
 		exp_length=exp.length();
 		this->exp=exp;			
 }
@@ -310,7 +320,7 @@ bool exp_parser::parse()
 				return false;
 }
 
-bool exp_parser::parse(string exp)
+bool exp_parser::parse(const string &exp)
 {
 		exp_length=exp.length();
 		this->exp=exp;

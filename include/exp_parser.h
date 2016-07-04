@@ -27,7 +27,7 @@ class exp_parser
 {
         public:
 
-        enum class error : char { noerror, undefined_var,unexpected};
+        enum class error : char { noerror, undefined_var, unexpected};
 
         error errorstatus;
 
@@ -41,11 +41,11 @@ class exp_parser
 
         exp_parser();
 
-        exp_parser(string exp);
+        exp_parser(const string &exp);
 
         bool parse();
 
-        bool parse(string exp);
+        bool parse(const string &exp);
 
 		private:
 		

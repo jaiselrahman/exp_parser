@@ -23,8 +23,13 @@ Mathemetical expression parser\n \
 \n\
 	supports implicit multiplication operator \n\
 	i.e: '*' can be omitted in expressions like a*(b) or (a)*b\n\
+\
+	value of previous expression can be obtained using pre-defined variable 'a'\n\
 \n\
-	value of previous expression can be obtained using variable 'a'\n\
+	support variables\n\
+	variables can be declared by the statement\n\
+	foo=expression\n\
+\n\
 \n\
 	roots can be calculated using decimal power or fraction\n\
 	eg : \n\

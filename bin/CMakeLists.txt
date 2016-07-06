@@ -1,5 +1,4 @@
 cmake_minimum_required ( VERSION 3.5.2)
-
 set(CMAKE_CXX_FLAGS_DEBUG -g2)
 set(CMAKE_CXX_FLAGS_RELEASE "-o3 -DNDEBUG")
 set(EXECUTABLE_OUTPUT_PATH $ENV{CPRJ}/exp/bin)
@@ -8,7 +7,7 @@ FIND_PACKAGE(Git)
 
 execute_process(
 COMMAND git describe --long
-COMMAND bash -c "awk  -F\"-\" '{print $1\".\"$2}'"
+COMMAND bash -c "awk  -F\"-\" '{print $1\".\"$2}' "
 OUTPUT_VARIABLE exp_VERSION
 OUTPUT_STRIP_TRAILING_WHITESPACE)
 
@@ -28,18 +27,11 @@ ELSE (IF(BUILD STREQUAL D))
 ENDIF()
 
 include_directories(../include)
-
-file ( GLOB SOURCES "../src/*.c*" )
-
-#set(MVG_SOURCE "mvg.cpp")
-# Build Library
-#add_library(mvg STATIC ${MVG_SOURCE})
-#set_target_properties(mvg PROPERTIES 
-#ARCHIVE_OUTPUT_DIRECTORY
-#${CMAKE_SOURCE_DIR}/lib)
+link_directories(../lib)
+file(GLOB SOURCES ../lib/libmapm.a ../src/*.c* )
 
 add_executable (exp ${SOURCES})
-
+target_link_libraries(exp libmapm.a)
 install(TARGETS exp 
 DESTINATION $ENV{HOME}/bin)
 

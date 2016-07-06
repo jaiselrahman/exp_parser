@@ -80,9 +80,9 @@ std::string  exp_parser::getvar()
 		return var;
 }
 	
-long double exp_parser::getnum()
+MAPM exp_parser::getnum()
 {
-		long double val=0;
+		MAPM val=0;
 		if(!(isdigit(look)||look=='.'))
 				seterror(error::unexpected);
 		else
@@ -116,7 +116,7 @@ long double exp_parser::getnum()
 
 			            }
 				}
-				s>>val;
+				val=s.str().c_str();
 		/*
 				stringstream s1,s2;	
 				s1<<exp.substr(pos-1);
@@ -155,10 +155,10 @@ bool exp_parser::isalpha(char c)
 		return ( look>='a' && look<='z' || look>='A' && look<='Z' );
 }
 
-long double exp_parser::assignment()
+MAPM exp_parser::assignment()
 {
 		string var;
-		long double val;
+		MAPM val;
 		if(isalpha(look))
 		{
 			var=getvar();
@@ -179,9 +179,9 @@ long double exp_parser::assignment()
 				return expression();
 }
 		
-long double exp_parser::expression()
+MAPM exp_parser::expression()
 {
-		long double val;
+		MAPM val;
 
 		if(isaddop(look))
 				val=0;
@@ -204,9 +204,9 @@ long double exp_parser::expression()
 		return val;
 }
 
-long double exp_parser::term()
+MAPM exp_parser::term()
 {
-		long double val;
+		MAPM val;
 		val=factor();
 		while(ismulop(look))
 		{
@@ -229,9 +229,9 @@ long double exp_parser::term()
 		return val;
 }
 
-long double exp_parser::factor()
+MAPM exp_parser::factor()
 {
-		long double val=0;
+		MAPM val=0;
 		if(match('(')) 
 		{
 				val=expression();

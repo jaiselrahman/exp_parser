@@ -17,11 +17,15 @@
 
 #include<string>
 #include<sstream>
-#include<cmath>
+#include<math.h>
+#include<m_apm.h>
+#include<m_apm_lc.h>
 #include<map>
 using namespace std;
 
 //expression parser class
+
+#define ALL_DIGITS (-1)
 
 class exp_parser
 {
@@ -33,11 +37,11 @@ class exp_parser
 
         int errorpos;              
 		
-		long double value;
+		MAPM value;
 
-        long double prev_value;
+        MAPM prev_value;
 
-        map<string,long double> var_table;
+        map<string,MAPM> var_table;
 
         exp_parser();
 
@@ -67,7 +71,7 @@ class exp_parser
 		
 		string getvar();
 			
-		long double getnum();
+		MAPM getnum();
 		
 		bool isvalidop(char c);
 		
@@ -79,13 +83,13 @@ class exp_parser
 
 		bool isalpha(char c);
 
-		long double assignment();
+		MAPM assignment();
 		
-		long double expression();
+		MAPM expression();
 
-		long double term();
+		MAPM term();
 		
-		long double factor();
+		MAPM factor();
 
 };
 

@@ -29,8 +29,10 @@ int main(int argc,char *argv[])
 {
 		string exp;
 		exp_parser e;
+		int n=6;
 		if(argc>1)
 		{
+			stringstream s;
 			int i=1;
 				while(argv[i])
 				{
@@ -39,19 +41,36 @@ int main(int argc,char *argv[])
 							cout<<help_text;
 							return 0;
 					}
+					else
 					if(argv[i][0]=='-')
 					{
 							switch(argv[i][1])
 							{
+									case 'p': 
+									if(!argv[i][2])
+									{
+											cout<<"Option -p requires valid integer argument\n";
+											return 1;
+									}
+									else
+									{
+											s<<&argv[i][2];
+											s>>n;
+											m_apm_cpp_precision(n-1);
+									}
+									break;
+									
 									case 'h':
 									cout<<"Usage : exp [-h] [-v] [math-expression] \n";
 									cout<<"Try 'exp --help' for more details\n";
 									return 0;
+									break;
 									
 									case 'v':
 									cerr<<"exp version " exp_VERSION " by jaisel rahman <jaisel20@gmail.com>\n";
 									return 0;
-									
+									break;
+
 									default:
 									cerr<<"Invalid option\n";
 									cerr<<"Try 'exp --help for more details\n";
@@ -60,8 +79,13 @@ int main(int argc,char *argv[])
 							}
 
 					}
+					else
 					if(e.parse(argv[i]))
-						cout<<" = "<<(long double)e.value<<"\n";
+					{
+							char c[1024];
+							e.value.toFixPtString(c,ALL_DIGITS);
+						cout<<" = "<<c<<"\n";
+					}
 					else
 					{
 						cerr<<" syntax error";
@@ -70,8 +94,8 @@ int main(int argc,char *argv[])
 					i++;
 				}
 		}
-		else
 		{
+			m_apm_cpp_precision(n-1);
 			cout<<"Enter an expression to evaluate, q to quit, ? for help \n";
 			do
 			{
@@ -90,7 +114,9 @@ int main(int argc,char *argv[])
 				{
 					if(e.parse(exp))
 					{
-							cout<<" = "<<e.value<<endl;
+							char c[1024];
+							e.value.toFixPtString(c,ALL_DIGITS);
+							cout<<" = "<<c<<endl;
 					}		
 					else
 					{

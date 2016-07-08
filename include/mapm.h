@@ -162,6 +162,10 @@
 #ifdef __cplusplus
 /* Comment this line out if you've compiled the library as C++. */
 #define APM_CONVERT_FROM_C
+#include<string>
+#include<cmath>
+#else
+#include<math.h>
 #endif
 
 #ifdef APM_CONVERT_FROM_C
@@ -316,7 +320,7 @@ extern
 "C" 
 #endif
 int MM_cpp_min_precision;
-
+int MAPM_defaultprecision;
 
 class MAPM {
 protected:
@@ -408,12 +412,14 @@ M_APM_struct myVal.
 public:
 	/* Constructors: */
 	MAPM(void) /* Default constructor (takes no value) */
-		{create();}
+		{create();setdefaultprecision(6);}
 	MAPM(const MAPM &m) /* Copy constructor */
 		{myVal=(M_APM)m.cval();ref(myVal);}
 	MAPM(M_APM m) /* M_APM constructor (refcount starts at one) */
 		{myVal=(M_APM)m;ref(myVal);}
-	MAPM(const char *s) /* Constructor from string */
+	MAPM(const std::string &s) /* Constructor from string */
+		{create();m_apm_set_string(val(),(char *)s.c_str());}
+	MAPM(const char *s) /* Constructor from C-style string */
 		{create();m_apm_set_string(val(),(char *)s);}
 	MAPM(double d) /* Constructor from double-precision float */
 		{create();m_apm_set_double(val(),d);}
@@ -423,22 +429,63 @@ public:
 		{create();m_apm_set_long(val(),l);}
 	/* Destructor */
 	~MAPM() {destroy();}
-	
+
+	/* to set default precision */
+	static void setdefaultprecision(int n)
+		{MAPM_defaultprecision=n;}
+
 	/* Extracting string descriptions: */
 	void toString(char *dest,int decimalPlaces) const
 		{m_apm_to_string(dest,decimalPlaces,cval());}
+
 	void toFixPtString(char *dest,int decimalPlaces) const
 		{m_apm_to_fixpt_string(dest,decimalPlaces,cval());}
+
 	void toFixPtStringEx(char *dest,int dp,char a,char b,int c) const
 		{m_apm_to_fixpt_stringex(dest,dp,cval(),a,b,c);}
+	
 	char *toFixPtStringExp(int dp,char a,char b,int c) const
 		{return(m_apm_to_fixpt_stringexp(dp,cval(),a,b,c));}
+	
 	void toIntegerString(char *dest) const
 		{m_apm_to_integer_string(dest,cval());}
-	
+
+	std::string toString(int dp=-1)
+			{	
+				if(dp==-1)
+						setmaxprecision(MAPM_defaultprecision);
+				char *c;
+				c=(char *)malloc(m_apm_significant_digits(cval())+3);
+				m_apm_to_string(c,dp,cval());
+				std::string s(c);
+				free(c);
+				return s;
+			}
+	std::string toFixPtString(int dp=-1)
+			{	
+				if(dp==-1)
+						setmaxprecision(MAPM_defaultprecision);
+				return std::string(m_apm_to_fixpt_stringexp(dp,cval(),'.',0,0));
+			}
+	std::string toFixPtString(int dp,char a,char b,int c)
+			{
+				if(dp==-1)
+						setmaxprecision(MAPM_defaultprecision);
+				return std::string(m_apm_to_fixpt_stringexp(dp,cval(),a,b,c));
+			}
+	std::string toIntegerString()
+			{	
+				return std::string(m_apm_to_fixpt_stringexp(0,cval(),'.',0,0));
+			}
+		
 	/* Basic operators: */
+	static void setmaxprecision(int n)
+		{ m_apm_cpp_precision(n-1); }
+
 	MAPM &operator=(const MAPM &m) /* Assigment operator */
 		{copyFrom((M_APM)m.cval());return *this;}
+	MAPM &operator=(const std::string &s)
+		{create();m_apm_set_string(val(),(char *)s.c_str());}
 	MAPM &operator=(const char *s) /* Assigment operator */
 		{m_apm_set_string(val(),(char *)s);return *this;}
 	MAPM &operator=(double d) /* Assigment operator */
@@ -463,19 +510,34 @@ public:
 		--(*this);          /* Call prefix decrement */
 		return old;
 	}
-	
+
+	/* io operators */
+	friend std::ostream& operator<<(std::ostream& out,MAPM &m)
+	{
+			out<<m.toFixPtString(-1);
+			return out;
+	}
+
+	friend std::istream& operator>>(std::istream& in,MAPM &m)
+	{
+			std::string s;
+			in>>s;
+			m=s;
+			return in;
+	}
+		
 	/* Comparison operators */
-	int operator==(const MAPM &m) const /* Equality operator */
+	bool operator==(const MAPM &m) const /* Equality operator */
 	 {return m_apm_compare(cval(),m.cval())==0;}
-	int operator!=(const MAPM &m) const /* Inequality operator */
+	bool operator!=(const MAPM &m) const /* Inequality operator */
 	 {return m_apm_compare(cval(),m.cval())!=0;}
-	int operator<(const MAPM &m) const
+	bool operator<(const MAPM &m) const
 	 {return m_apm_compare(cval(),m.cval())<0;}
-	int operator<=(const MAPM &m) const
+	bool operator<=(const MAPM &m) const
 	 {return m_apm_compare(cval(),m.cval())<=0;}
-	int operator>(const MAPM &m) const
+	bool operator>(const MAPM &m) const
 	 {return m_apm_compare(cval(),m.cval())>0;}
-	int operator>=(const MAPM &m) const
+	bool operator>=(const MAPM &m) const
 	 {return m_apm_compare(cval(),m.cval())>=0;}
 	
 	/* Basic arithmetic operators */
@@ -513,11 +575,11 @@ public:
 		{return m_apm_exponent(cval());}
 	int significant_digits(void) const 
 		{return m_apm_significant_digits(cval());}
-	int is_integer(void) const 
+	bool is_integer(void) const 
 		{return m_apm_is_integer(cval());}
-	int is_even(void) const 
+	bool is_even(void) const 
 		{return m_apm_is_even(cval());}
-	int is_odd(void) const 
+	bool is_odd(void) const 
 		{return m_apm_is_odd(cval());}
 
 	/* Functions: */

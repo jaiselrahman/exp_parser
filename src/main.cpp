@@ -14,10 +14,11 @@
 
 #include<iostream>
 #include<string>
+#include<cmath>
 #include<exp_parser.h>
-#include<exp_version.h>
 #include<help.txt>
-
+#include<mapm.h>
+typedef  MAPM type;
 using namespace std;
 string trim(const string &t)
 {
@@ -28,11 +29,12 @@ string trim(const string &t)
 int main(int argc,char *argv[])
 {
 		string exp;
-		exp_parser e;
-		int n=6;
+		exp_parser<type> e;
+		MAPM::setmaxprecision(6);
+		int n=-1;
 		if(argc>1)
 		{
-			stringstream s;
+			bool cl=false;
 			int i=1;
 				while(argv[i])
 				{
@@ -54,11 +56,10 @@ int main(int argc,char *argv[])
 									}
 									else
 									{
-											s<<&argv[i][2];
-											s>>n;
-											m_apm_cpp_precision(n-1);
+											n=strtol(&argv[i][2],NULL,10);
+											i++;
 									}
-									break;
+									continue;
 									
 									case 'h':
 									cout<<"Usage : exp [-h] [-v] [math-expression] \n";
@@ -79,23 +80,24 @@ int main(int argc,char *argv[])
 							}
 
 					}
-					else
 					if(e.parse(argv[i]))
 					{
-							char c[1024];
-							e.value.toFixPtString(c,ALL_DIGITS);
-						cout<<" = "<<c<<"\n";
+							if(e.value.is_integer()&&n==-1)
+									cout<<" = "<<e.value.toIntegerString()<<"\n";
+							else
+									cout<<" = "<<e.value.toFixPtString(n)<<"\n";
+							cl=true;
 					}
 					else
 					{
-						cerr<<" syntax error";
+							cerr<<" syntax error";
 						return 1;
 					}
 					i++;
 				}
+				if(cl) return 0;
 		}
-		{
-			m_apm_cpp_precision(n-1);
+		
 			cout<<"Enter an expression to evaluate, q to quit, ? for help \n";
 			do
 			{
@@ -114,22 +116,23 @@ int main(int argc,char *argv[])
 				{
 					if(e.parse(exp))
 					{
-							char c[1024];
-							e.value.toFixPtString(c,ALL_DIGITS);
-							cout<<" = "<<c<<endl;
+							if(e.value.is_integer()&&n==-1)
+									cout<<" = "<<e.value.toIntegerString()<<"\n";
+							else
+									cout<<" = "<<e.value.toFixPtString(-1)<<endl;
 					}		
 					else
 					{
 							switch(e.errorstatus)
 							{
-								case exp_parser::error::unexpected:
+								case exp_parser<type>::error::unexpected:
 								cout<<"   ";
 								cout.width(e.errorpos);
 								cout.fill('~');
 								cout<<'^'<<endl;
 								cout<<"  syntax error\n";
 								break;
-								case exp_parser::error::undefined_var:
+								case exp_parser<type>::error::undefined_var:
 								cout<<"   ";
 								cout.width(e.errorpos);
 								cout.fill('~');
@@ -141,8 +144,5 @@ int main(int argc,char *argv[])
 				}
 			}while(!cin.eof());	
 		cout<<'\n';
-		}
 		return 0;
 }
-
-

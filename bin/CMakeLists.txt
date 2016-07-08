@@ -28,10 +28,10 @@ ENDIF()
 
 include_directories(../include)
 link_directories(../lib)
-file(GLOB SOURCES ../lib/libmapm.a ../src/*.c* )
+file(GLOB SOURCES ../src/main.cpp )
 
 add_executable (exp ${SOURCES})
-target_link_libraries(exp libmapm.a)
+target_link_libraries(exp libmapm.a libexp.a)
 install(TARGETS exp 
 DESTINATION $ENV{HOME}/bin)
 

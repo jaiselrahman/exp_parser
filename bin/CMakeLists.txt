@@ -31,7 +31,7 @@ link_directories(../lib)
 file(GLOB SOURCES ../src/main.cpp )
 
 add_executable (exp ${SOURCES})
-target_link_libraries(exp libmapm.a libexp.a)
+target_link_libraries(exp libmapm.a mpfr gmp)
 install(TARGETS exp 
 DESTINATION $ENV{HOME}/bin)
 

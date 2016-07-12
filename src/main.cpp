@@ -17,9 +17,13 @@
 #include<cmath>
 #include<exp_parser.h>
 #include<help.txt>
-#include<mapm.h>
-typedef  MAPM type;
+#include<mpreal.h>
+
+using namespace mpfr;
 using namespace std;
+
+typedef  mpreal type;
+
 string trim(const string &t)
 {
 		int i;
@@ -28,10 +32,10 @@ string trim(const string &t)
 }
 int main(int argc,char *argv[])
 {
+		mpreal::set_default_prec(mpfr::digits2bits(50));
 		string exp;
 		exp_parser<type> e;
-		MAPM::setmaxprecision(6);
-		int n=-1;
+		int n=6;
 		if(argc>1)
 		{
 			bool cl=false;
@@ -56,7 +60,7 @@ int main(int argc,char *argv[])
 									}
 									else
 									{
-											n=strtol(&argv[i][2],NULL,10);
+											n=strtol(&argv[i][2],NULL,10)+1;
 											i++;
 									}
 									continue;
@@ -82,11 +86,8 @@ int main(int argc,char *argv[])
 					}
 					if(e.parse(argv[i]))
 					{
-							if(e.value.is_integer()&&n==-1)
-									cout<<" = "<<e.value.toIntegerString()<<"\n";
-							else
-									cout<<" = "<<e.value.toFixPtString(n)<<"\n";
-							cl=true;
+							cout.precision(n);
+							cout<<" = "<<e.value<<'\n';
 					}
 					else
 					{
@@ -116,10 +117,8 @@ int main(int argc,char *argv[])
 				{
 					if(e.parse(exp))
 					{
-							if(e.value.is_integer()&&n==-1)
-									cout<<" = "<<e.value.toIntegerString()<<"\n";
-							else
-									cout<<" = "<<e.value.toFixPtString(-1)<<endl;
+					 		cout.precision(n);
+							cout<<" = "<<e.value<<'\n';
 					}		
 					else
 					{

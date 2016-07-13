@@ -1,28 +1,28 @@
 # EXP_PARSER 
-==================
+
 It is a *c++ template class* used to evaluate simple mathematical expression in string
 
-      *Supports basic mathematical operators* like
+### Supports basic mathematical operators  like
 
-      **^  power**
-      **\*  multiplication**
-      ** /   division**
-      **+  addition**
-      ** -  subtraction**
+###		^  power
+###		\   multiplication
+###		/   division
+###		+  addition
+###		-   subtraction
 
-     *listed in order of precedence*
+### listed in order of precedence
 
-        **( )** can be used used to group expression and has the highest order of precedence
+**( )** can be used used to group expression and has the highest order of precedence
 
-    *Supports implicit multiplication operator*
-  >	  i.e: '*' can be omitted in expressions like a*(b) or (a)*b
+### Supports implicit multiplication operator
+i.e: '\*' can be omitted in expressions like a\*(b) or (a)\*b
 
-     *Support variables*
-    *variable name should start with alphabet and can contain numbers*
+### Support variables
+*Variable name should start with alphabet and can contain numbers*
 
-        Variables can be declared by the statement *variable=expression* in the expression string
+Variables can be declared by the statement __variable=expression__ in the expression string
 
-        Value of previous expression can be obtained using pre-defined variable '***a***'
+Value of previous expression can be obtained using pre-defined variable '***a***'
 
 
 To use expression parser in your program just include the header file the header file *'exp_parser.h'* in your program
@@ -46,17 +46,17 @@ exp_parser contains following public data member
 
 Eg of simple expression parser
 ```
-    #include <iostream.h>
-  	  #include <exp_parser.h> /\* expression parser header file \*/
+      #include <iostream.h>
+      #include <exp_parser.h> /* expression parser header file */
   	  using namespace std;
   	  int main()
   	  {
-         exp_parse<double> e;        /\* create an  expression parser of type double \*/
+         exp_parse<double> e;        /* create an  expression parser of type double */
          string s;
          cout << "Enter a mathematical expression : \n ";
          cin >> s;
-  	       e.parser( s );
-  	       cout << "Result : " << e.value;
-  	       return 0;
+  	     e.parser( s );
+  	     cout << "Result : " << e.value;
+  	     return 0;
   	  }
 ```

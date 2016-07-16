@@ -1,0 +1,5 @@
+#define exp_VERSION "@exp_VERSION@"
+#define exp_VERSION_MAJOR "@exp_VERSION_MAJOR@"
+#define exp_VERSION_MINOR "@PROJECT_VERSION_MINOR@"
+#define exp_VERSION_PATCH "@exp_VERSION_PATCH@"
+#define exp_VERSION_TWEAK "@exp_VERSION_TWEAK@"

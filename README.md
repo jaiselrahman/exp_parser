@@ -45,7 +45,7 @@ create an object of  **exp_parser<*T*>**
 
 ####Eg of simple expression parser
 
-    
+```c++   
     #include <iostream.h>
     #include <exp_parser.h>  /* expression parser header file *
     using namespace std;
@@ -59,4 +59,4 @@ create an object of  **exp_parser<*T*>**
         cout << "Result : " << e.value;
         return 0;
   	}
-
+```

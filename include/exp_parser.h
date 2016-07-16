@@ -268,12 +268,7 @@ template<typename T>
 T exp_parser<T>::expression()
 {
 		T val;
-
-		if(isaddop(look))
-				val=0;
-		else
-				val=term();	
-
+		val=term();	
 		while(isaddop(look))
 		{
 				switch(look)
@@ -331,7 +326,13 @@ T exp_parser<T>::factor()
 		}
 		else
 		if(isaddop(look))
-				val=expression();
+		{
+				if(match('-'))
+						val=-getnum();
+				else 
+				if(match('+'))
+						val=getnum();
+		}
 		else
 		if(isdigit(look)||look=='.')
 		{

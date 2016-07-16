@@ -29,7 +29,7 @@ To use expression parser in your program just include the header file the header
 
 create an object of  **exp_parser<*T*>**
 ***T*** can  be any type that should supported atleast
-**+	 , -  , / , \*** operators
+___+ , - , / , *___ operators
 
 ####exp_parser contains following constructor
 -	 ***exp_parser()***  -   default constructor
@@ -47,7 +47,7 @@ create an object of  **exp_parser<*T*>**
 
 ```c++   
     #include <iostream.h>
-    #include <exp_parser.h>  /* expression parser header file *
+    #include <exp_parser.h>  /* expression parser header file */
     using namespace std;
     int main()
     {

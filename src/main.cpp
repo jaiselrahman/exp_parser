@@ -32,10 +32,10 @@ string trim(const string &t)
 }
 int main(int argc,char *argv[])
 {
-		mpreal::set_default_prec(mpfr::digits2bits(50));
 		string exp;
 		exp_parser<type> e;
 		int n=6;
+		mpreal::set_default_prec(mpfr::digits2bits(n));
 		if(argc>1)
 		{
 			bool cl=false;
@@ -55,12 +55,14 @@ int main(int argc,char *argv[])
 									case 'p': 
 									if(!argv[i][2])
 									{
+											
 											cout<<"Option -p requires valid integer argument\n";
 											return 1;
 									}
 									else
 									{
 											n=strtol(&argv[i][2],NULL,10)+1;
+											mpreal::set_default_prec(mpfr::digits2bits(n));
 											i++;
 									}
 									continue;
@@ -86,7 +88,8 @@ int main(int argc,char *argv[])
 					}
 					if(e.parse(argv[i]))
 					{
-							cout.precision(n);
+						
+							cout.precision(n+1);
 							cout<<" = "<<e.value<<'\n';
 					}
 					else
@@ -117,7 +120,7 @@ int main(int argc,char *argv[])
 				{
 					if(e.parse(exp))
 					{
-					 		cout.precision(n);
+					 		cout.precision(n+1);
 							cout<<" = "<<e.value<<'\n';
 					}		
 					else

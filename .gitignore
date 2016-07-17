@@ -1,6 +1,6 @@
-CMakeFiles/
-bin/
+cli/
 tests/
 !CMakeLists.txt
 !*.in
-*.t
+!src/
+

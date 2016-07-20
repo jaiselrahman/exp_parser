@@ -26,7 +26,7 @@ ELSE (IF(BUILD STREQUAL D))
 	set(CMAKE_BUILD_TYPE DEBUG)
 ENDIF()
 
-include_directories(../..)
+include_directories(../.. . ../../mpreal)
 file(GLOB SOURCES ../src/main.cpp )
 
 add_executable (exp ${SOURCES})

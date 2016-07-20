@@ -2,5 +2,3 @@ build/
 tests/
 !CMakeLists.txt
 !*.in
-
-

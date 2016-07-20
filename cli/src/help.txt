@@ -3,42 +3,42 @@
 #ifndef _HELP_TEXT_
 #define _HELP_TEXT_
 
-string help_text="\n\
-exp version " exp_VERSION " by jaisel rahman <jaisel20@gmail.com>\n\
+string help_text="Exp version " exp_VERSION " by jaisel rahman <jaisel20@gmail.com> \n\
 Mathemetical expression parser\n \
 \n\
-	enter q (or) quit to quit ,\n \
-	enter ? (or) help for this page\n \
+enter q (or) quit to quit ,\n\
+enter ? (or) help for this page\n\
+\n\
+	Supports basic mathematical operators like\n\
+\n\
+	^  power\n\
+	*  multiplication\n\
+	/  division\n\
+	+  addition\n\
+	-  subtraction\n\
+\n\
+	listed in order of precedence\n\
+\n\
+	( ) can be used used to group expression\n\
+\n\
+	also supports unary plus '+' and unary minus '-'\n\
 	\n\
-	Supports basic mathematical operators like \n\
-	\n\
-	^ pow \n\
-	* multiplication \n\
-	/ division \n\
-	+ addition \n\
-	- subtraction \n\
+	Supports implicit multiplication operator\n\
+	i.e: \'*\' can be omitted in expressions like a*(b) or (a)*b\n\
 \n\
-	listed in order of precedence \n\
-	( ) can be used used to group expression and has the highest order of precedence\n\
-\n\
-	supports implicit multiplication operator \n\
-	i.e: '*' can be omitted in expressions like a*(b) or (a)*b\n\
-\
-	value of previous expression can be obtained using pre-defined variable 'a'\n\
-\n\
-	support variables\n\
-	variables can be declared by the statement\n\
-	foo=expression\n\
-\n\
-\n\
-	roots can be calculated using decimal power or fraction\n\
+	Roots can be calculated using decimal power or fraction\n\
 	eg : \n\
-			2^(1/5) \n\
-			=1.41421 \n\
-	(or)\n \
-			2^0.5 \n\
-			=1.41421 \n\
+		2^(1/5) \n\
+		=1.41421 \n\
+		(or)\n\
+		2^0.5 \n\
+		=1.41421 \n\
+	Support variables\n\
+		- Variable name should start with alphabet and can contain numbers\n\
+		\n\
+		- Variables can be declared by the statement variable=expression in the expression string\n\
 \n\
-";
+	Value of previous expression can be obtained using pre-defined variable 'a'\n\
+	 ";
 
 #endif  //_HELP_TEXT_

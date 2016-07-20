@@ -5,7 +5,7 @@ It is a *c++ template class* used to evaluate simple mathematical expression in 
 #### Supports basic mathematical operators  like
 
 #### ^  power
-#### \  multiplication
+#### *  multiplication
 #### /  division
 #### +  addition
 #### -  subtraction

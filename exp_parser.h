@@ -9,6 +9,8 @@
 *	by   jaisel rahman
 *		<jaisel20@gmail.com>
 *
+*	This header file is licensed under GNU LGPL v3
+*
 **/
 
 #ifndef _EXP_PARSER_H_
@@ -119,6 +121,7 @@ void exp_parser<T>::seterror(error e)
 {
 		errorstatus=e;
 		errorpos=pos;
+		pos=exp_length;
 		look=0;
 }
 
@@ -328,10 +331,10 @@ T exp_parser<T>::factor()
 		if(isaddop(look))
 		{
 				if(match('-'))
-						val=-getnum();
+						val=-factor();
 				else 
 				if(match('+'))
-						val=getnum();
+						val=factor();
 		}
 		else
 		if(isdigit(look)||look=='.')
@@ -353,8 +356,8 @@ T exp_parser<T>::factor()
 					auto q = var_table.find(var); 
 					if (q==var_table.end()) 
 					{ 
-							seterror(error::undefined_var);
-							--pos; 
+							--pos;
+							seterror(error::undefined_var); 
 					} 
 					else 
 					{
@@ -364,7 +367,7 @@ T exp_parser<T>::factor()
 				}
 		}
 		else
-				seterror(error::unexpected);
+				{ seterror(error::unexpected); }
 		
 		if(match('^'))
 		{
@@ -400,7 +403,7 @@ bool exp_parser<T>::parse()
 		getchar();
 		eatspace();
 		value=assignment();
-		if(pos<=exp_length)
+		if(pos<exp_length)
 		{
 				seterror(error::unexpected);
 				errorpos=pos;

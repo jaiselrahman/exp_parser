@@ -88,8 +88,8 @@ int main(int argc,char *argv[])
 					}
 					if(e.parse(argv[i]))
 					{
-						
-							cout.precision(n+1);
+							cl=true;
+							cout.precision(n);
 							cout<<" = "<<e.value<<'\n';
 					}
 					else
@@ -120,7 +120,7 @@ int main(int argc,char *argv[])
 				{
 					if(e.parse(exp))
 					{
-					 		cout.precision(n+1);
+					 		cout.precision(n);
 							cout<<" = "<<e.value<<'\n';
 					}		
 					else

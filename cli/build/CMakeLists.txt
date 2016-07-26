@@ -1,6 +1,6 @@
 cmake_minimum_required ( VERSION 3.5.2)
 set(CMAKE_CXX_FLAGS_DEBUG -g2)
-set(CMAKE_CXX_FLAGS_RELEASE "-o3 -DNDEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE " -O3 -DNDEBUG")
 set(EXECUTABLE_OUTPUT_PATH .)
 
 FIND_PACKAGE(Git)
@@ -26,7 +26,7 @@ ELSE (IF(BUILD STREQUAL D))
 	set(CMAKE_BUILD_TYPE DEBUG)
 ENDIF()
 
-include_directories(../.. . ../../mpreal)
+include_directories(../.. ../mpreal ./)
 file(GLOB SOURCES ../src/main.cpp )
 
 add_executable (exp ${SOURCES})

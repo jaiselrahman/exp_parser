@@ -36,6 +36,7 @@ int main(int argc,char *argv[])
 		exp_parser<type> e;
 		int n=6;
 		mpreal::set_default_prec(mpfr::digits2bits(n));
+		e.add_var("pi",mpreal("3.14"),exp_parser<type>::type::constant);
 		if(argc>1)
 		{
 			bool cl=false;
@@ -125,21 +126,20 @@ int main(int argc,char *argv[])
 					}		
 					else
 					{
+							cout<<"   ";
+							cout.width(e.errorpos);
+							cout.fill('~');
+							cout<<'^'<<endl;
 							switch(e.errorstatus)
 							{
 								case exp_parser<type>::error::unexpected:
-								cout<<"   ";
-								cout.width(e.errorpos);
-								cout.fill('~');
-								cout<<'^'<<endl;
 								cout<<"  syntax error\n";
 								break;
 								case exp_parser<type>::error::undefined_var:
-								cout<<"   ";
-								cout.width(e.errorpos);
-								cout.fill('~');
-								cout<<'^'<<endl;
 								cout<<"  undefined variable\n";
+								break;
+								case exp_parser<type>::error::predefined_const:
+								cout<<"  predefined constant\n";
 								break;
 							}
 					}

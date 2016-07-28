@@ -30,9 +30,11 @@ class exp_parser
 {
 public:
 
-        enum class error : char { noerror, undefined_var, unexpected};
+        enum class error : char { noerror, undefined_var, unexpected ,predefined_const};
 
-        error errorstatus;
+        enum class type : char { variable, constant };
+		
+		error errorstatus;
 
         int errorpos;              
 		
@@ -40,15 +42,20 @@ public:
 
         T prev_value;	
 
-        map<string,T> var_table;
+        map<string,pair<T,type>> var_table;
 
 		exp_parser();
 
-        exp_parser(std::string const &exp);
+        exp_parser(const std::string &exp);
 
         bool parse();
         
-		bool parse(std::string const &exp);
+		bool parse(const std::string &exp);
+
+		bool add_var(const std::string &var,const T &val,type _type=type::variable);
+
+		bool isconst(const std::string &var);
+
 
 private:
 		
@@ -250,10 +257,17 @@ T exp_parser<T>::assignment()
 		if(isalpha(look))
 		{
 			var=getvar();
+			
 			if(match('='))
 			{
+					if(isconst(var))
+					{
+							pos-=2;
+							seterror(error::predefined_const);
+							return 0;
+					}
 					val=expression();
-					var_table[var]=val;
+					add_var(var,val);
 					return val;
 			}
 			else
@@ -361,13 +375,15 @@ T exp_parser<T>::factor()
 					} 
 					else 
 					{
-							val=q->second;
+							val=q->second.first;
 					}
 					
 				}
 		}
 		else
-				{ seterror(error::unexpected); }
+		{
+				seterror(error::unexpected);
+		}
 		
 		if(match('^'))
 		{
@@ -425,4 +441,37 @@ bool exp_parser<T>::parse(std::string const &exp)
 		return parse();
 }
 
-#endif
+template<typename T>
+bool exp_parser<T>::add_var(const std::string &var,const T &val,type _type)
+{
+		auto q = var_table.find(var);
+
+		if (q==var_table.end()||q->second.second==type::variable)
+		{
+				var_table[var]=make_pair(val,_type);
+				return true;
+		}
+		else
+		if(q->second.second==type::constant)
+		{
+		       seterror(error::predefined_const);
+			   return false;
+		}
+		return false;
+}
+
+template<typename T>
+bool exp_parser<T>::isconst(const std::string &var)
+{
+		auto q = var_table.find(var);
+		
+		if (q->second.second==type::constant)
+		{
+				return true;
+		}
+		else
+		{
+				return false;
+		}
+}
+#endif	//_EXP_PARSER_H_

@@ -24,84 +24,88 @@
 using namespace std;
 
 //expression parser class
-
-template<typename T>
-class exp_parser
+namespace EP
 {
-public:
+	enum class error : char { noerror, undefined_var, unexpected, predefined_const};
 
-        enum class error : char { noerror, undefined_var, unexpected ,predefined_const};
+	enum class type : char { variable, constant };
 
-        enum class type : char { variable, constant };
-		
-		error errorstatus;
-
-        int errorpos;              
-		
-		T value;
-
-        T prev_value;	
-
-        map<string,pair<T,type>> var_table;
-
-		exp_parser();
-
-        exp_parser(const std::string &exp);
-
-        bool parse();
-        
-		bool parse(const std::string &exp);
-
-		bool add_var(const std::string &var,const T &val,type _type=type::variable);
-
-		bool isconst(const std::string &var);
-
-
-private:
-		
-		string exp;        //contains expression to be parsed
-		
-		int exp_length;	   //contains length of expression string
-		
-		char look;		   //contains next char in expression string
-		
-		int pos;		   //contains present location if look
-		
-		void eatspace();   //to ignore white space in expression string
-		
-		void getchar();    //to get the value of look
-
-		void seterror(error e); //to set the error status
-
-		bool match(char c); 
-		
-		string getvar();
+	template<typename T>
+	class exp_parser
+	{
+	public:
+	
+	
 			
-		T getnum();
-		
-		bool isvalidop(char c);
-		
-		bool isaddop(char c);
-		
-		bool ismulop(char c);
+			error errorstatus;
 
-		bool isdigit(char c);
-
-		bool isalpha(char c);
-
-		T assignment();
+        	int errorpos;              
 		
-		T expression();
+			T value;
 
-		T term();
+        	T prev_value;	
+
+        	map<string,pair<T,type>> var_table;
+
+			exp_parser();
+
+        	exp_parser(const std::string &exp);
+
+        	bool parse();
+        
+			bool parse(const std::string &exp);
+
+			bool add_var(const std::string &var,const T &val=0,type _type=type::variable);
+
+			bool isconst(const std::string &var);
+
+
+	private:
 		
-		T factor();
+			string exp;        //contains expression to be parsed
+		
+			int exp_length;	   //contains length of expression string
+		
+			char look;		   //contains next char in expression string
+		
+			int pos;		   //contains present location if look
+		
+			void eatspace();   //to ignore white space in expression string
+		
+			void getchar();    //to get the value of look
+
+			void seterror(error e); //to set the error status
+
+			bool match(char c); 
+		
+			string getvar();
+			
+			T getnum();
+		
+			bool isvalidop(char c);
+		
+			bool isaddop(char c);
+		
+			bool ismulop(char c);
+
+			bool isdigit(char c);
+
+			bool isalpha(char c);
+
+			T assignment();
+		
+			T expression();
+
+			T term();
+		
+			T factor();
 
 };
 
+};
 
 template<typename T>
-void exp_parser<T>::eatspace() 
+void EP::exp_parser<T>::eatspace() 
 {
 		while(look==' '||look=='	')
 		{
@@ -110,7 +114,7 @@ void exp_parser<T>::eatspace()
 }
 
 template<typename T>
-void exp_parser<T>::getchar()
+void EP::exp_parser<T>::getchar()
 {
 		if(pos<=exp_length)
 		{
@@ -124,7 +128,7 @@ void exp_parser<T>::getchar()
 }
 
 template<typename T>
-void exp_parser<T>::seterror(error e) 
+void EP::exp_parser<T>::seterror(error e) 
 {
 		errorstatus=e;
 		errorpos=pos;
@@ -133,7 +137,7 @@ void exp_parser<T>::seterror(error e)
 }
 
 template<typename T>
-bool exp_parser<T>::match(char c) 
+bool EP::exp_parser<T>::match(char c) 
 {
 		if(look==c)
 		{
@@ -148,7 +152,7 @@ bool exp_parser<T>::match(char c)
 }
 
 template<typename T>
-std::string  exp_parser<T>::getvar()
+std::string  EP::exp_parser<T>::getvar()
 {
 		string var;
 		if(!isalpha(look))
@@ -168,7 +172,7 @@ std::string  exp_parser<T>::getvar()
 }
 	
 template<typename T>
-T exp_parser<T>::getnum()
+T EP::exp_parser<T>::getnum()
 {
 		T val=0;
 		if(!(isdigit(look)||look=='.'))
@@ -220,37 +224,37 @@ T exp_parser<T>::getnum()
 }
 
 template<typename T>
-bool exp_parser<T>::isvalidop(char c )
+bool EP::exp_parser<T>::isvalidop(char c )
 {
 		return (ismulop(c)||isaddop(c)||look=='('||look==')'||look=='^');
 }
 
 template<typename T>		
-bool exp_parser<T>::isaddop(char c)
+bool EP::exp_parser<T>::isaddop(char c)
 {
 		return (c=='+'||c=='-');	
 }
 
 template<typename T>
-bool exp_parser<T>::ismulop(char c)
+bool EP::exp_parser<T>::ismulop(char c)
 {
 		return (c=='*'||c=='/'||c=='(');
 }
 
 template<typename T>
-bool exp_parser<T>::isdigit(char c)
+bool EP::exp_parser<T>::isdigit(char c)
 {
 		return (c>='0'&&c<='9');
 }
 
 template<typename T>
-bool exp_parser<T>::isalpha(char c)
+bool EP::exp_parser<T>::isalpha(char c)
 {
 		return ( look>='a' && look<='z' || look>='A' && look<='Z' );
 }
 
 template<typename T>
-T exp_parser<T>::assignment()
+T EP::exp_parser<T>::assignment()
 {
 		string var;
 		T val;
@@ -282,7 +286,7 @@ T exp_parser<T>::assignment()
 }
 		
 template<typename T>
-T exp_parser<T>::expression()
+T EP::exp_parser<T>::expression()
 {
 		T val;
 		val=term();	
@@ -303,7 +307,7 @@ T exp_parser<T>::expression()
 }
 
 template<typename T>
-T exp_parser<T>::term()
+T EP::exp_parser<T>::term()
 {
 		T val;
 		val=factor();
@@ -328,7 +332,7 @@ T exp_parser<T>::term()
 }
 
 template<typename T>
-T exp_parser<T>::factor()
+T EP::exp_parser<T>::factor()
 {
 		T val=0;
 		if(match('(')) 
@@ -396,14 +400,14 @@ T exp_parser<T>::factor()
 
 
 template<typename T>
-exp_parser<T>::exp_parser()
+EP::exp_parser<T>::exp_parser()
 {
 		prev_value=0;
 }
 
 
 template<typename T>
-exp_parser<T>::exp_parser(std::string const &exp)
+EP::exp_parser<T>::exp_parser(std::string const &exp)
 {
 		exp_parser();
 		exp_length=exp.length();
@@ -411,7 +415,7 @@ exp_parser<T>::exp_parser(std::string const &exp)
 }
 		
 template<typename T>
-bool exp_parser<T>::parse()
+bool EP::exp_parser<T>::parse()
 {
 		pos=0;
 		errorstatus=error::noerror;
@@ -434,7 +438,7 @@ bool exp_parser<T>::parse()
 }
 
 template<typename T>
-bool exp_parser<T>::parse(std::string const &exp)
+bool EP::exp_parser<T>::parse(std::string const &exp)
 {
 		exp_length=exp.length();
 		this->exp=exp;
@@ -442,7 +446,7 @@ bool exp_parser<T>::parse(std::string const &exp)
 }
 
 template<typename T>
-bool exp_parser<T>::add_var(const std::string &var,const T &val,type _type)
+bool EP::exp_parser<T>::add_var(const std::string &var,const T &val,type _type)
 {
 		auto q = var_table.find(var);
 
@@ -461,7 +465,7 @@ bool exp_parser<T>::add_var(const std::string &var,const T &val,type _type)
 }
 
 template<typename T>
-bool exp_parser<T>::isconst(const std::string &var)
+bool EP::exp_parser<T>::isconst(const std::string &var)
 {
 		auto q = var_table.find(var);
 		

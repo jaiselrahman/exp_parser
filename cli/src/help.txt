@@ -3,7 +3,7 @@
 #ifndef _HELP_TEXT_
 #define _HELP_TEXT_
 
-string help_text="Exp version " exp_VERSION " by jaisel rahman <jaisel20@gmail.com> \n\
+#define HELP_TEXT "Exp version " exp_VERSION " by jaisel rahman <jaisel20@gmail.com> \n\
 Mathemetical expression parser\n \
 \n\
 enter q (or) quit to quit ,\n\
@@ -39,6 +39,6 @@ enter ? (or) help for this page\n\
 		- Variables can be declared by the statement variable=expression in the expression string\n\
 \n\
 	Value of previous expression can be obtained using pre-defined variable 'a'\n\
-	 ";
+	 "
 
 #endif  //_HELP_TEXT_

@@ -19,9 +19,23 @@
 #include"help.txt"
 #include<mpreal.h>
 
+#define HAVE_READLINE_H 1 
+
+#ifdef HAVE_READLINE_H
+	#include<readline/readline.h>
+	#include<readline/history.h>
+	char *c;
+	#define HistoryFile  "/data/data/com.termux/files/home/.exp_history"
+	#define add_history(X) add_history((X).c_str())
+#else
+	#define add_history(X)
+	#define read_history(X)
+	#define write_history(X)
+#endif
+
 #define PI "3.141592653589793238462643383279502884197169399\
-375105820974944592307816406286208998628034825342117067982148\
-086513282306647093844609550582231725359408128481117450284102\
+3751058209749445923078164062862089986280348253421170679821480\
+86513282306647093844609550582231725359408128481117450284102\
 701938521105559644622948954930381964428810975665933446128475\
 648233786783165271201909145648566923460348610454326648213393\
 607260249141273724586997472482236150282340795515112055881168\
@@ -35,8 +49,8 @@
 318796931517257943860403036395703382632593537215128964016797\
 694845390461961548136833293693702683188836758023996908893269\
 752781165328222495041033657338594419051644614642369403738060\
-905908822203694572794411694624061668484893417030434648040682\
-0774078369140625"
+9059088222036945727944116946240616684848934170304346480406820\
+774078369140625"
 
 using namespace mpfr;
 using namespace std;
@@ -54,7 +68,7 @@ int main(int argc,char *argv[])
 {
 		string exp;
 		exp_parser<d_type> e;
-		e.add_var("pi",mpfr::const_pi(2048),EP::type::constant);
+		e.add_var("pi",mpfr::const_pi(2048),EP::type::cons);
 		int n=6;
 		mpreal::set_default_prec(mpfr::digits2bits(n));
 		if(argc>1)
@@ -124,25 +138,35 @@ int main(int argc,char *argv[])
 		}
 		
 			cout<<"Enter an expression to evaluate, q to quit, ? for help \n";
+			
+			read_history(HistoryFile);
+			
 			do
-			{
-	            cout<<"-> ";
-				getline(cin,exp,'\n');
-				
+			{	
+		#ifdef HAVE_READLINE_H
+				c=readline("-> ");
+				exp = c ? c : "" ;
+		#else
+				cout<<"-> ";
+				getline(cin,exp);
+		#endif
+
 				if(exp=="q")
 				{
+						write_history(HistoryFile);
 						return 0;
 				}
 				else if(exp=="?")
 				{
 						cout<<HELP_TEXT<<endl;
 				}
-				else if(trim(exp)!=""&&!cin.eof())
+				else if(trim(exp)!="")
 				{
 					if(e.parse(exp))
 					{
 					 		cout.precision(n);
 							cout<<" = "<<e.value<<'\n';
+							add_history(exp);
 					}		
 					else
 					{
@@ -164,7 +188,15 @@ int main(int argc,char *argv[])
 							}
 					}
 				}
-			}while(!cin.eof());	
+	#ifdef HAVE_READLINE_H
+			free(c);
+			}while(c!=NULL);
+	#else
+			}while(!cin.eof());
+	#endif
+
+			write_history(HistoryFile);
+
 		cout<<'\n';
 		return 0;
 }

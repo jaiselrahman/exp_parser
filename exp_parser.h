@@ -28,7 +28,7 @@ namespace EP
 {
 	enum class error : char { noerror, undefined_var, unexpected, predefined_const};
 
-	enum class type : char { variable, constant };
+	enum class type  : char { var, cons };
 
 	template<typename T>
 	class exp_parser
@@ -55,7 +55,9 @@ namespace EP
         
 			bool parse(const std::string &exp);
 
-			bool add_var(const std::string &var,const T &val=0,type _type=type::variable);
+			bool add_var(const std::string &var,const T &val=0,type _type=type::var);
+
+			bool find_var(const std::string &var,T &val);
 
 			bool isconst(const std::string &var);
 
@@ -182,6 +184,7 @@ T EP::exp_parser<T>::getnum()
 				bool dec_found=false;
 				bool exp_found=false;
 				stringstream s;
+
 				while(isdigit(look)||(look=='.'&&dec_found==false))
 				{
 						s<<look;
@@ -189,7 +192,7 @@ T EP::exp_parser<T>::getnum()
 							dec_found=true;
 						
 						getchar();
-
+						
 						if(look=='e'||look=='E')
 						{
 								exp_found=true;
@@ -202,24 +205,16 @@ T EP::exp_parser<T>::getnum()
 								}
 								else
 								{
-										pos-=1;
+										pos--;
 										break;
 								}
 
 			            }
 				}
 				s>>val;
-				
-		/*
-				stringstream s1,s2;	
-				s1<<exp.substr(pos-1);
-				s1>>val;
-				s2<<val;
-				pos+=s2.str().length()-1;
-				getchar();
-		*/
-
 		}
+
+
 		return val;
 }
 
@@ -229,10 +224,10 @@ bool EP::exp_parser<T>::isvalidop(char c )
 		return (ismulop(c)||isaddop(c)||look=='('||look==')'||look=='^');
 }
 
-template<typename T>		
+template<typename T>
 bool EP::exp_parser<T>::isaddop(char c)
 {
-		return (c=='+'||c=='-');	
+		return (c=='+'||c=='-');
 }
 
 template<typename T>
@@ -370,18 +365,7 @@ T EP::exp_parser<T>::factor()
 				else
 				{
 					string var=getvar();
-
-					auto q = var_table.find(var); 
-					if (q==var_table.end()) 
-					{ 
-							--pos;
-							seterror(error::undefined_var); 
-					} 
-					else 
-					{
-							val=q->second.first;
-					}
-					
+					find_var(var,val);
 				}
 		}
 		else
@@ -450,13 +434,13 @@ bool EP::exp_parser<T>::add_var(const std::string &var,const T &val,type _type)
 {
 		auto q = var_table.find(var);
 
-		if (q==var_table.end()||q->second.second==type::variable)
+		if (q==var_table.end()||q->second.second==type::var)
 		{
 				var_table[var]=make_pair(val,_type);
 				return true;
 		}
 		else
-		if(q->second.second==type::constant)
+		if(q->second.second==type::cons)
 		{
 		       seterror(error::predefined_const);
 			   return false;
@@ -465,11 +449,28 @@ bool EP::exp_parser<T>::add_var(const std::string &var,const T &val,type _type)
 }
 
 template<typename T>
+bool EP::exp_parser<T>::find_var(const std::string &var,T &val)
+{
+		auto q = var_table.find(var);
+		if (q==var_table.end())
+	    {       
+				--pos;
+				seterror(error::undefined_var);
+				return false;
+		}
+		else
+		{
+		        val=q->second.first;
+				return true;
+		}
+}
+
+template<typename T>
 bool EP::exp_parser<T>::isconst(const std::string &var)
 {
 		auto q = var_table.find(var);
 		
-		if (q->second.second==type::constant)
+		if (q->second.second==type::cons)
 		{
 				return true;
 		}

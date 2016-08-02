@@ -30,7 +30,7 @@ include_directories(../.. ../mpreal ./)
 file(GLOB SOURCES ../src/main.cpp )
 
 add_executable (exp ${SOURCES})
-target_link_libraries(exp  mpfr gmp)
+target_link_libraries(exp  mpfr gmp readline)
 install(TARGETS exp 
 DESTINATION $ENV{HOME}/bin)
 

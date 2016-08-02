@@ -1,5 +1,5 @@
-#define exp_VERSION "4.0.17"
+#define exp_VERSION "4.1.0"
 #define exp_VERSION_MAJOR "4"
-#define exp_VERSION_MINOR "0"
-#define exp_VERSION_PATCH "17"
+#define exp_VERSION_MINOR "1"
+#define exp_VERSION_PATCH "0"
 #define exp_VERSION_TWEAK ""

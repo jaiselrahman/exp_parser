@@ -1,0 +1,43 @@
+Exp version by jaisel rahman <jaisel20@gmail.com>
+Mathemetical expression parser
+
+This is a command line interface for exp_parser library similar to wcalc
+It is licsenced under GPLV3
+
+For readline library support #define HAVE_READLINE_H
+
+Its uses mpreal.h header as a wrapper for mpfr arbitary percision library
+For more information about mprealnreadmits README file
+
+	Supports basic mathematical operators like
+
+	^  power
+	*  multiplication
+	/  division
+	+  addition
+	-  subtraction
+
+	listed in order of precedence
+
+	( ) can be used used to group expression
+
+	also supports unary plus '+' and unary minus '-'
+
+	Supports implicit multiplication operator
+	i.e: '*' can be omitted in expressions like a*(b) or (a)*b
+
+	Roots can be calculated using decimal power or fraction
+	eg : 
+		2^(1/5)
+		=1.41421
+		(or)
+		2^0.5
+		=1.41421
+
+	Support variables
+		- Variable name should start with alphabet and can contain numbers
+
+		- Variables can be declared by the statement variable=expression in the expression string
+
+	Value of previous expression can be obtained using pre-defined variable 'a'
+

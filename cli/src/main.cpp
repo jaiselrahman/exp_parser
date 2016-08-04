@@ -3,11 +3,17 @@
 *	Expression Parser 
 *		- to evaluate simple math expression
 *
-*	written in c++ 
-*	
+*	written in c++ 	
 *
 *	by   jaisel rahman
 *		<jaisel20@gmail.com>
+*
+*	Exp version by jaisel rahman <jaisel20@gmail.com>
+*	Mathemetical expression parser
+*
+*	This is a command line interface for exp_parser lib
+*
+*	It is licensed under GPLV3
 *
 **/
 

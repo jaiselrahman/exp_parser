@@ -1,3 +1,10 @@
+/**
+*	Exp version by jaisel rahman <jaisel20@gmail.com>
+*	Mathemetical expression parser
+*	This is a command line interface for exp_parser header
+*	It is licensed under GPLV3
+*/
+
 #include<exp_version.h>
 
 #ifndef _HELP_TEXT_
@@ -22,7 +29,7 @@ enter ? (or) help for this page\n\
 	( ) can be used used to group expression\n\
 \n\
 	also supports unary plus '+' and unary minus '-'\n\
-	\n\
+\n\
 	Supports implicit multiplication operator\n\
 	i.e: \'*\' can be omitted in expressions like a*(b) or (a)*b\n\
 \n\
@@ -33,6 +40,7 @@ enter ? (or) help for this page\n\
 		(or)\n\
 		2^0.5 \n\
 		=1.41421 \n\
+\n\
 	Support variables\n\
 		- Variable name should start with alphabet and can contain numbers\n\
 		\n\

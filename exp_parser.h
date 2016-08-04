@@ -18,7 +18,6 @@
 #define _EXP_PARSER_H_
 
 #include<string>
-#include<cctype>
 #include<sstream>
 #include<map>
 using namespace std;
@@ -34,18 +33,12 @@ namespace EP
 	class exp_parser
 	{
 	public:
-	
-	
 			
 			error errorstatus;
 
         	int errorpos;              
 		
 			T value;
-
-        	T prev_value;	
-
-        	map<string,pair<T,type>> var_table;
 
 			exp_parser();
 
@@ -72,6 +65,10 @@ namespace EP
 		
 			int pos;		   //contains present location if look
 		
+			T prev_value;
+			
+			map<string,pair<T,type>> var_table;
+
 			void eatspace();   //to ignore white space in expression string
 		
 			void getchar();    //to get the value of look
@@ -189,10 +186,22 @@ T EP::exp_parser<T>::getnum()
 				{
 						s<<look;
 						if(look=='.')
-							dec_found=true;
+						{
+								dec_found=true;
+								getchar();
+								if(isdigit(look))
+								{
+										s<<look;
+								}
+								else
+								{
+									 pos--;
+									 break;;
+								}
+						}
 						
 						getchar();
-						
+							
 						if(look=='e'||look=='E')
 						{
 								exp_found=true;
@@ -205,16 +214,14 @@ T EP::exp_parser<T>::getnum()
 								}
 								else
 								{
-										pos--;
+										pos-=1;
 										break;
 								}
-
 			            }
+
 				}
 				s>>val;
 		}
-
-
 		return val;
 }
 
@@ -375,9 +382,22 @@ T EP::exp_parser<T>::factor()
 		
 		if(match('^'))
 		{
-					return pow(val,factor());       
+				return pow(val,factor());       
 		}
-		
+		if(isalpha(look))
+		{
+				if(match('a'))
+				{
+						val=prev_value;
+				}
+				else
+				{
+						T tmp;
+						string var=getvar();
+						find_var(var,tmp);
+						val*=tmp;
+				}
+		}
 		return val;
 }
 
@@ -403,7 +423,7 @@ bool EP::exp_parser<T>::parse()
 {
 		pos=0;
 		errorstatus=error::noerror;
-		errorpos=0;
+		errorpos=-1;
 		getchar();
 		eatspace();
 		value=assignment();

@@ -69,5 +69,4 @@ ___+ , - , / , * , >>___ operators
   	}
 ```
 
-//TODO: to add function support
 //TODO: to add support for hex bin oct

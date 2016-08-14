@@ -1,4 +1,5 @@
 cmake_minimum_required ( VERSION 3.5.2)
+set(CMAKE_CXX_FLAGS -std=c++14)
 set(CMAKE_CXX_FLAGS_DEBUG -g2)
 set(CMAKE_CXX_FLAGS_RELEASE " -O3 -DNDEBUG")
 set(EXECUTABLE_OUTPUT_PATH .)
@@ -27,7 +28,7 @@ ELSE (IF(BUILD STREQUAL D))
 ENDIF()
 
 include_directories(../.. ../mpreal ./)
-file(GLOB SOURCES ../src/main.cpp )
+file(GLOB SOURCES  ../src/main.cpp)
 
 add_executable (exp ${SOURCES})
 target_link_libraries(exp  mpfr gmp readline)

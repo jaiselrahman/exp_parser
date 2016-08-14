@@ -1912,22 +1912,9 @@ inline std::ostream& operator<<(std::ostream& os, const mpreal& v)
 inline std::istream& operator>>(std::istream &is, mpreal& v)
 {
     // TODO: use cout::hexfloat and other flags to setup base
-    int _base=10;
-	ios::fmtflags _f;
 	std::string tmp;
     is >> tmp;
-		// Added to handle hex oct bin
-
-		_f=is.flags();
-
-		if( _f & ios::hex )
-				_base = 16;
-		else
-		if( _f & ios::oct )
-				_base = 8;
-
-		//end
-    mpfr_set_str(v.mpfr_ptr(), tmp.c_str(), _base, mpreal::get_default_rnd());
+    mpfr_set_str(v.mpfr_ptr(), tmp.c_str(), 10, mpreal::get_default_rnd());
     return is;
 }
 

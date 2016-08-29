@@ -7,7 +7,7 @@ It is licsenced under GPLV3
 For readline library support #define HAVE_READLINE_H
 
 Its uses mpreal.h header as a wrapper for mpfr arbitary percision library
-For more information about mprealnreadmits README file
+For more information about mpreal read its README file
 
 	Supports basic mathematical operators like
 
@@ -39,5 +39,7 @@ For more information about mprealnreadmits README file
 
 		- Variables can be declared by the statement variable=expression in the expression string
 
+	Supports functions
+	
 	Value of previous expression can be obtained using pre-defined variable 'a'
 

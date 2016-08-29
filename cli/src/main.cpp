@@ -11,10 +11,12 @@
 *	Exp version by jaisel rahman <jaisel20@gmail.com>
 *	Mathemetical expression parser
 *
-*	This is a command line interface for exp_parser lib
+*	This is a command line interface for exp_parser header
 *
 *	It is licensed under GPLV3
+*	See LICENSE file
 *
+*	For more information read README file
 **/
 
 
@@ -80,7 +82,7 @@ int main(int argc,char *argv[])
 		string exp;
 		exp_parser<d_type> e;
 		e.add_var("pi",3.14,EP::type::cons);
-		e.add_func("sin",sin);
+		e.add_func("log",log10);
 		int n=6;
 		mpreal::set_default_prec(mpfr::digits2bits(n));
 		if(argc>1)

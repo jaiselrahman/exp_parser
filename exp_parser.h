@@ -397,11 +397,17 @@ T EP::exp_parser<T>::factor()
 									val=(fptr)(expression());
 									match(')');
 							}
+							else
+							{
+									find_var(var,val);
+									val*=expression();
+									match(')');
+							}
 					}
 					else
 					find_var(var,val);
 				}
-		}
+		}	
 		else
 		{
 				seterror(error::unexpected);
@@ -518,7 +524,6 @@ bool EP::exp_parser<T>::find_func(const std::string &func,f_ptr& _f_ptr)
 		auto q=f_table.find(func);
 		if (q==f_table.end())
 		{
-				--pos;
 				return false;
 		}
 		else

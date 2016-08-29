@@ -54,13 +54,17 @@ ___+ , - , / , * , >>___ operators
 
 ```c++   
     #include <iostream.h>
-    #include <exp_parser.h>  /* expression parser header file */
-    using namespace std;
+    #include <cmath> 
+	#include <exp_parser.h>  /* expression parser header file */
+
+	using namespace std;
 	using namespace EP;
     int main()
     {
         exp_parse<double> e; /* create an  expression parser of type double */
-        string s;
+        e.add_var("pi",3.14,type::cons);
+		e.add_func("log",&log10);
+		string s;
         cout << "Enter a mathematical expression : \n ";
         cin >> s;
         e.parser( s );

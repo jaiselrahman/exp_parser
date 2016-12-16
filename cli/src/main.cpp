@@ -63,7 +63,7 @@
 using namespace mpfr;
 using namespace std;
 using namespace EP;
-typedef  double d_type;
+typedef mpreal d_type;
 
 string trim(const string &t)
 {
@@ -72,17 +72,22 @@ string trim(const string &t)
 		return t.substr(i);
 }
 
-mpreal sin2(mpreal n)
+mpreal _2sin(mpreal n)
 {
 		return mpfr::sin(n);
+}
+mpreal _2log10(mpreal n)
+{
+		return mpfr::log10(n);
 }
 
 int main(int argc,char *argv[])
 {
 		string exp;
 		exp_parser<d_type> e;
-		e.add_var("pi",3.14,EP::type::cons);
-		e.add_func("log",log10);
+		e.add_var("pi",PI,EP::type::cons);
+		e.add_func("sin",_2sin);
+		e.add_func("log",_2log10);
 		int n=6;
 		mpreal::set_default_prec(mpfr::digits2bits(n));
 		if(argc>1)

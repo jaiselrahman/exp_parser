@@ -198,7 +198,6 @@ T EP::exp_parser<T>::getnum()
 				bool dec_found=false;
 				bool exp_found=false;
 				stringstream s;
-
 				while(isdigit(look)||(look=='.'&&dec_found==false))
 				{
 						s<<look;
@@ -357,7 +356,8 @@ T EP::exp_parser<T>::factor()
 		if(match('(')) 
 		{
 				val=expression();
-				match(')');
+				if(!match(')'))
+						seterror(error::unexpected);
 				if(isdigit(look)||look=='.')
 				{
 					look='*';
@@ -401,7 +401,6 @@ T EP::exp_parser<T>::factor()
 							{
 									find_var(var,val);
 									val*=expression();
-									match(')');
 							}
 					}
 					else

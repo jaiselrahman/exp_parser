@@ -19,7 +19,7 @@ execute_process( COMMAND bash -c "echo \"${exp_VERSION}\"")
 project(exp
 VERSION ${exp_VERSION})
 
-configure_file ("exp_version.h.in"  "../../exp_version.h"  )
+configure_file ("exp_version.h.in"  "../../../exp_version.h"  )
 
 IF(BUILD STREQUAL R)
 	set(CMAKE_BUILD_TYPE RELEASE)

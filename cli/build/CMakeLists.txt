@@ -7,19 +7,20 @@ set(EXECUTABLE_OUTPUT_PATH .)
 FIND_PACKAGE(Git)
 
 execute_process(
+COMMAND cd 
 COMMAND git describe --long
 COMMAND bash -c "awk  -F\"-\" '{print $1\".\"$2}' "
 OUTPUT_VARIABLE exp_VERSION
 OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-string(REGEX REPLACE "^v(.*)" "\\1" exp_VERSION ${exp_VERSION})
+#string(REGEX REPLACE "^v(.*)" "\\1" exp_VERSION ${exp_VERSION})
 
 execute_process( COMMAND bash -c "echo \"${exp_VERSION}\"")
 
 project(exp
 VERSION ${exp_VERSION})
 
-configure_file ("exp_version.h.in"  "../../../exp_version.h"  )
+configure_file ("exp_version.h.in"  "../../exp_version.h"  )
 
 IF(BUILD STREQUAL R)
 	set(CMAKE_BUILD_TYPE RELEASE)
@@ -28,10 +29,10 @@ ELSE (IF(BUILD STREQUAL D))
 ENDIF()
 
 include_directories(../.. ../mpreal ./)
-file(GLOB SOURCES  ../src/main.cpp)
+file(GLOB SOURCES  ../src/main.cpp ../../exp_parser.h)
 
 add_executable (exp ${SOURCES})
-target_link_libraries(exp  mpfr gmp readline)
+target_link_libraries(exp  )#mpfr gmp readline)
 install(TARGETS exp 
 DESTINATION $ENV{HOME}/bin)
 

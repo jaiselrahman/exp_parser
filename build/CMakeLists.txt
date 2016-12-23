@@ -7,13 +7,12 @@ set(EXECUTABLE_OUTPUT_PATH .)
 FIND_PACKAGE(Git)
 
 execute_process(
-COMMAND cd 
 COMMAND git describe --long
 COMMAND bash -c "awk  -F\"-\" '{print $1\".\"$2}' "
 OUTPUT_VARIABLE exp_VERSION
 OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-#string(REGEX REPLACE "^v(.*)" "\\1" exp_VERSION ${exp_VERSION})
+string(REGEX REPLACE "^v(.*)" "\\1" exp_VERSION ${exp_VERSION})
 
 execute_process( COMMAND bash -c "echo \"${exp_VERSION}\"")
 
@@ -28,11 +27,14 @@ ELSE (IF(BUILD STREQUAL D))
 	set(CMAKE_BUILD_TYPE DEBUG)
 ENDIF()
 
-include_directories(../.. ../mpreal ./)
-file(GLOB SOURCES  ../src/main.cpp ../../exp_parser.h)
+include_directories(../ ../cli/src/mpreal)
+file(GLOB SOURCES  ../cli/src/main.cpp ../exp_parser.h)
 
 add_executable (exp ${SOURCES})
-target_link_libraries(exp  )#mpfr gmp readline)
+
+#un-commet this line to use <mpreal.h> in the projects
+#target_link_libraries(exp mpfr gmp readline)
+
 install(TARGETS exp 
 DESTINATION $ENV{HOME}/bin)
 

@@ -13,8 +13,8 @@
 *
 **/
 
-#define exp_VERSION ""
-#define exp_VERSION_MAJOR ""
-#define exp_VERSION_MINOR ""
-#define exp_VERSION_PATCH ""
+#define exp_VERSION "4.2.3"
+#define exp_VERSION_MAJOR "4"
+#define exp_VERSION_MINOR "2"
+#define exp_VERSION_PATCH "3"
 #define exp_VERSION_TWEAK ""

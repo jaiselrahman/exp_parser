@@ -3,13 +3,12 @@
 *	Expression Parser
 *		- to evaluate simple math expression
 *
+*
+*	Mathematical expression parser
 *	written in c++
 *
 *	by   jaisel rahman
 *		<jaisel20@gmail.com>
-*
-*	Exp version by jaisel rahman <jaisel20@gmail.com>
-*	Mathemetical expression parser
 *
 *	This is a command line interface for exp_parser header
 *
@@ -59,41 +58,32 @@ int main(int argc,char *argv[])
 {
     string exp;
     exp_parser<d_type> e;
-    e.add_var("pi",PI,EP::type::constant);
-    e.add_func("sin",std::sin);
-    e.add_func("log",log10);
+    e.addVariable("pi",PI,EP::type::constant);
+    e.addFunction("sin",std::sin);
+    e.addFunction("log",log10);
     int n=6;
-    if(argc>1)
-    {
+    if(argc>1) {
         bool cl=false;
         int i=1;
-        while(argv[i])
-        {
-            if(string("--help").compare(argv[i])==0)
-            {
+        while(argv[i]) {
+            if(string("--help").compare(argv[i])==0) {
                 cout<<HELP_TEXT;
                 return 0;
-            }
-            else if(argv[i][0]=='-')
-            {
-                switch(argv[i][1])
-                {
+            } else if(argv[i][0]=='-') {
+                switch(argv[i][1]) {
                 case 'p':
-                    if(!argv[i][2])
-                    {
+                    if(!argv[i][2]) {
 
-                        cout<<"Option -p requires valid integer argument\n";
+                        cerr<<"Option -p requires valid integer argument\n";
                         return 1;
-                    }
-                    else
-                    {
+                    } else {
                         n=std::stoi(&argv[i][2])+1; //n numbers of precision
                         i++;
                         continue;
                     }
                 case 'h':
-                    cout<<"Usage : exp [-h] [-v] [[-p ][math-expression]] \n";
-                    cout<<"Try 'exp --help' for more details\n";
+                    cerr<<"Usage : exp [-h] [-v] [[-p ][math-expression]] \n";
+                    cerr<<"Try 'exp --help' for more details\n";
                     return 0;
                     break;
 
@@ -104,19 +94,16 @@ int main(int argc,char *argv[])
 
                 default:
                     cerr<<"Invalid option\n";
-                    cerr<<"Try 'exp --help for more details\n";
+                    cerr<<"Try 'exp --help' for more details\n";
                     return 2;
                     break;
                 }
             }
-            if(e.parse(argv[i]))
-            {
+            if(e.parse(argv[i])) {
                 cl=true;
                 cout.precision(n);
-                cout<<" = "<<e.value<<'\n';
-            }
-            else
-            {
+                cout<<" = "<<e.getValue()<<'\n';
+            } else {
                 cerr<<" syntax error";
                 return 1;
             }
@@ -125,45 +112,35 @@ int main(int argc,char *argv[])
         if(cl) return 0;
     }
     cout<<"Enter an expression to evaluate, q to quit, ? for help \n";
-    do
-    {
+    do {
         cout<<"-> ";
         getline(cin,exp);
-        if(exp=="q")
-        {
+        if(exp=="q") {
             return 0;
-        }
-        else if(exp=="?")
-        {
+        } else if(exp=="?") {
             cout<<HELP_TEXT<<endl;
-        }
-        else if(trim(exp)!="")
-        {
-            if(e.parse(exp))
-            {
+        } else if(trim(exp)!="") {
+            if(e.parse(exp)) {
                 cout.precision(n);
-                cout<<" = "<<e.value<<'\n';
-            }
-            else
-            {
-                cout<<"   ";
-                cout.width(e.errorpos);
-                cout<<'^'<<endl;
-                switch(e.errorstatus)
-                {
+                cout<<" = "<<e.getValue()<<'\n';
+            } else {
+                cerr<<"   ";
+                cerr.width(e.getErrorPos());
+                cerr<<'^'<<endl;
+                switch(e.getErrorStatus()) {
                 case EP::error::unexpected:
-                    cout<<"  syntax error\n";
+                    cerr<<"  syntax error\n";
                     break;
                 case EP::error::undefined_var:
-                    cout<<"  undefined variable\n";
+                    cerr<<"  undefined variable\n";
                     break;
                 case EP::error::predefined_const:
-                    cout<<"  predefined constant\n";
+                    cerr<<"  predefined constant\n";
                     break;
                 }
             }
         }
-    }while(!cin.eof());
+    } while(!cin.eof());
     cout<<'\n';
     return 0;
 }

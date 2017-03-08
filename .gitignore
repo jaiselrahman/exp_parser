@@ -3,3 +3,7 @@ build/debug
 tests/
 !CMakeLists.txt
 !*.in
+/exp/build/
+/exp/dist/
+/HelloCMakeWorld_1/build/
+/build/

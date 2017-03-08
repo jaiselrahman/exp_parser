@@ -24,21 +24,20 @@ i.e: '\*' can be omitted in expressions like a\*(b) or (a)\*b
 
 - Predefined variable 'a' containes value of previously parsed expressioned
 
-exp_parser<T> class is written inside the namespace EP
 
 To use expression parser in your program just include the header file the header file ***'exp_parser.h'*** in your program
 
 create an object of  ***EP::exp_parser<*T*>***
 ***T*** can  be any type that should supported atleast
-___+ , - , / , * , >>___ operators
+___+ , - , / , * , %, >>___ operators
 
 ####exp_parser contains following constructor
 -	 ***exp_parser()***  -   default constructor
--    ***exp_parser(std::string)***  -  parametrized constructor used to inialize expression string
+-    ***exp_parser(std::string)***  -  parametrized constructor used to initialize expression string
 
 ####exp_parser contains following public member functions
 -	 ***bool parser()*** - evaluate the string initialized with ***exp_parser(std::string)*** constructor and returns true if success else false
--    ***bool parser(std::string expression)*** - evaluate the string and return returns true if success else false
+-    ***bool parser(std::string expression)*** - evaluate the string and returns true if success else false
 -    ***bool add_var(string var_name,T val=0,EP::type _type=EP::type::constant)*** - used to add variable or constant with value of type T
 -    ***bool find_var(std::string var,T& val)*** - returns true if var is defined and stores its value in val else false
 -    ***bool isconst(std::string var)*** - returns true if var is a constant else false
@@ -59,6 +58,7 @@ ___+ , - , / , * , >>___ operators
 
 	using namespace std;
 	using namespace EP;
+	
     int main()
     {
         exp_parse<double> e; /* create an  expression parser of type double */
@@ -68,7 +68,7 @@ ___+ , - , / , * , >>___ operators
         cout << "Enter a mathematical expression : \n ";
         cin >> s;
         e.parser( s );
-        cout << "Result : " << e.value;
+        cout << "Result : " << e.getValue();
         return 0;
   	}
 ```
